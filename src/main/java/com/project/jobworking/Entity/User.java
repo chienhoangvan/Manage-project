@@ -2,11 +2,9 @@ package com.project.jobworking.Entity;
 
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
+import java.util.Set;
 
 @Data
 @Entity
@@ -15,22 +13,36 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long user_id;
 
+    @Column
     private String name;
 
+    @Column
     private Date dateOfBirth;
 
+    @Column
     private String number;
 
+    @Column
     private String role ;
 
+    @Column
     private String username;
 
+    @Column
     private String password;
 
+    @Column
     private String address;
 
-    private String MSSV;
+    @Column
+    private String identify;
 
-//    @OneToMany(mappedBy = "user", cascade = {CascadeType.REMOVE}, fetch = FetchType.LAZY, orphanRemoval = true)
-//    private Set<Issue> issues;
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH},
+            fetch = FetchType.EAGER)
+    @JoinColumn(name = "project_id")
+    private Project project;
+
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "job_id")
+    private Set<Job> jobs;
 }

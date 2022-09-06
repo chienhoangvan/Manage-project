@@ -4,24 +4,26 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Data
 @Entity
-public class Project {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long project_id;
+public class Project extends BaseEntity {
 
+    @Column
     private String project_name;
 
-    private String create_by;
-
+    @Column
     private String description;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JsonBackReference
+    @Column
+    private String status;
+
+    @OneToMany(mappedBy = "project",fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "student_id")
-    private User student;
+    private Set<User> users;
 
-
+    @OneToMany(mappedBy = "project",fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "job_id")
+    private Set<Job> jobs;
 }
