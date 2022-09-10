@@ -19,11 +19,9 @@ public class Project extends BaseEntity {
     @Column
     private String status;
 
-    @OneToMany(mappedBy = "project",fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "student_id")
+    @OneToMany(mappedBy = "project", cascade = {CascadeType.REMOVE}, fetch = FetchType.LAZY, orphanRemoval = true)
     private Set<User> users;
 
-    @OneToMany(mappedBy = "project",fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "job_id")
+    @OneToMany(mappedBy = "project", cascade = {CascadeType.REMOVE}, fetch = FetchType.LAZY, orphanRemoval = true)
     private Set<Job> jobs;
 }

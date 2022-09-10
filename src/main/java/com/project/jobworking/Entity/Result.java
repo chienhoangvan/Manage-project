@@ -14,10 +14,8 @@ public class Result extends BaseEntity {
     private String result;
 
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id")
     private User user;
 
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "job_id")
     private Job job;
 }

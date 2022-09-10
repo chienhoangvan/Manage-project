@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Register</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/CSS/log-register.css}">
+</head>
+
+<body>
+
+<div class="wrapperRegister">
+    <div class="containerRegister">
+
+        <form th:action="@{/register/save}" th:object="${newAccount}" method="POST">
+
+            <p><b>Account details</b></p>
+
+            <div class="row">
+                <div class="col-25">
+                    <label for="username">Username</label>
+                </div>
+                <div class="col-75">
+                    <input type="text" id="username" name="username" required="required">
+                </div>
+
+                <div class="col-25">
+                    <label for="password">Password</label>
+                </div>
+                <div class="col-75">
+                    <input type="password" id="password" name="password" required="required">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-25">
+                    <label for="name">Full Name</label>
+                </div>
+                <div class="col-75">
+                    <input type="text" id="name" name="name" required="required">
+                </div>
+
+                <div class="col-25">
+                    <label for="dateOfBirth">Date of Birth</label>
+                </div>
+                <div class="col-75">
+                    <input type="text" id="dateOfBirth" name="dateOfBirth" required="required">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-25">
+                    <label for="number">Phone Number</label>
+                </div>
+                <div class="col-75">
+                    <input type="text" id="number" name="number" required="required">
+                </div>
+
+                <div class="col-25">
+                    <label for="address">Address</label>
+                </div>
+                <div class="col-75">
+                    <input type="text" id="address" name="address" required="required">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-75"></div>
+                <div class="col-75">
+                    <input class="registerButton" type="submit" value="Register">
+                </div>
+            </div>
+        </form>
+
+        <form th:action="@{/employee/users/showusers}">
+            <div class="row">
+                <div class="col-75"></div>
+                <div class="col-75">
+                    <input class="registerButton" type="submit" value="Back">
+                </div>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+</body>
+
+</html>

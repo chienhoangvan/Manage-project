@@ -1,0 +1,185 @@
+@charset "ISO-8859-1";
+
+body {
+    /* background: url("https://images5.alphacoders.com/808/thumb-1920-808254.jpg") repeat center fixed; */
+    background: url("../../Images/library-login.jpeg") repeat center fixed;
+    background-color: #BEE4FA;
+    background-size: cover;
+    font-family: Helvetica, sans-serif;
+}
+
+.wrapper {
+    /*    padding-left: 300px;
+          padding-top: 200px;     */
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+input[type=text], input[type=password], input[type=email], select,
+textarea {
+    width: 90%;
+    padding: 12px;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    resize: vertical;
+}
+
+label {
+    padding: 12px 12px 12px 0;
+    display: inline-block;
+}
+
+input[type=submit] {
+    background-color: #6dae67;
+    color: white;
+    padding: 12px;
+    width: 100px;
+    margin: 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    float: unset;
+    display: inline-block;
+}
+
+.container {
+    width: 370px;
+    height: 220px;
+    border-radius: 10px;
+    background-color: #f1f2b3f2;
+    padding: 20px;
+}
+
+.col-25 {
+    float: left;
+    width: 100px;
+    margin-top: 6px;
+    margin-left: 10px;
+}
+
+.col-75 {
+    float: left;
+    width: 250px;
+    margin-top: 6px;
+}
+
+.col-50 {
+    float: left;
+    width: 175px;
+    margin-top: 6px;
+}
+
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+    margin-bottom: 8px;
+}
+
+.incorrect {
+    color: red;
+}
+
+.logout {
+    color: green;
+}
+
+/*------------- REGISTER FORM ----------------*/
+.wrapperRegister {
+    padding-left: 250px;
+    padding-top: 50px;
+}
+
+.containerRegister {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 750px;
+    height: 380px;
+    border-radius: 5px;
+    background-color: #f1f2b3f2;
+    padding: 20px;
+}
+
+input[type=submit].registerButton {
+    background-color: #6dae67;
+    color: white;
+    margin-right: 10px;
+    padding: 12px;
+    width: 250px;
+    margin-top: 8px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    float: left;
+}
+
+/*---------------- LOGOUT PAGE ------------------*/
+input[type=submit].logoutButton {
+    background-color: #6dae67;
+    color: white;
+    margin-right: 10px;
+    padding: 12px;
+    width: 100px;
+    margin-top: 8px;
+    margin-left: 70px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    float: left;
+}
+
+.wrapperLogout {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.containerLogout {
+    width: 250px;
+    height: 130px;
+    border-radius: 10px;
+    background-color: #f1f2b3f2;
+    padding: 20px;
+}
+
+/* ------------------- ACCOUNT CREATED ------------- */
+input[type=submit].accountCreatedButton {
+    background-color: #6dae67;
+    color: white;
+    margin-right: 10px;
+    padding: 12px;
+    width: 200px;
+    margin-top: 8px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    float: left;
+}
+
+.wrapperAccountCreated {
+    padding-left: 300px;
+    padding-top: 200px;
+}
+
+.containerAccountCreated {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 275px;
+    height: 110px;
+    border-radius: 5px;
+    background-color: #f1f2b3f2;
+    padding: 20px;
+}
+
+/*-----------------LOGIN PAGE-----------------*/
+
+.form-actions {
+    text-align: center;
+}

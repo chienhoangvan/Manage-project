@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" th:href="@{CSS/account-layout.css}">
+<title>Admin-Home</title>
+</head>
+
+<body>
+	<div class="wrapper">
+		<div th:replace="navBar-layout :: adminNavBar"></div>
+		
+		<div class="homeContent">
+			<h1 th:text="${'Welcome,' + ' ' + currentUser.name}"></h1>
+		</div>
+
+	</div>
+</body>
+
+</html>
