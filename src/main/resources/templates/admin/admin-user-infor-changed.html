@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="ISO-8859-1"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/CSS/account-layout.css}">
+    <title>User Information Changed</title>
+</head>
+
+<body>
+<div th:replace="navBar-layout :: adminNavBar"></div>
+
+
+<div class="container">
+    <h3>User information changed!</h3>
+    <form th:action="@{/admin/users/showusers}" th:method="GET">
+        <div class="row">
+            <input type="submit" value="Go back to User Control"/>
+        </div>
+    </form>
+</div>
+</body>
+</html>

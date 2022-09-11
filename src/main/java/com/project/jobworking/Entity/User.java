@@ -37,7 +37,14 @@ public class User {
     @Column
     private String identify;
 
+    @Column
+    private String email;
+
+    @Column
     private boolean enabled = true;
+
+    @Column
+    private boolean isCompleted;
 
     @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.MERGE}, fetch = FetchType.LAZY)
     private Project project;

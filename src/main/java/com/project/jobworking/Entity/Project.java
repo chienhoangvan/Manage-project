@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.Set;
 
 @Data
@@ -17,7 +18,10 @@ public class Project extends BaseEntity {
     private String description;
 
     @Column
-    private String status;
+    private Boolean isUsed = false;
+
+    @Column
+    private Date endDate;
 
     @OneToMany(mappedBy = "project", cascade = {CascadeType.REMOVE}, fetch = FetchType.LAZY, orphanRemoval = true)
     private Set<User> users;

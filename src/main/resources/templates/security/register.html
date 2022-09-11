@@ -65,6 +65,22 @@
             </div>
 
             <div class="row">
+                <div class="col-25">
+                    <label for="number">Email</label>
+                </div>
+                <div class="col-75">
+                    <input type="text" id="email" name="email" required="required">
+                </div>
+
+                <div class="col-25">
+                    <label for="address">Role</label>
+                </div>
+                <div class="col-75">
+                    <input type="text" id="role" name="role" required="required">
+                </div>
+            </div>
+
+            <div class="row">
                 <div class="col-75"></div>
                 <div class="col-75">
                     <input class="registerButton" type="submit" value="Register">
@@ -72,7 +88,7 @@
             </div>
         </form>
 
-        <form th:action="@{/employee/users/showusers}">
+        <form th:action="@{/admin/users/showusers}">
             <div class="row">
                 <div class="col-75"></div>
                 <div class="col-75">

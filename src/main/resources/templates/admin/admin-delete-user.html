@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="ISO-8859-1">
+    <link rel="stylesheet" type="text/css" th:href="@{/CSS/account-layout.css}">
+    <title>Are you sure?</title>
+</head>
+
+<body>
+<div th:replace="navBar-layout :: adminNavBar"></div>
+
+
+<div class="container">
+
+    <h3>Are you sure you want to delete this user?</h3>
+
+    <div class="row">
+        <div class="col-50">
+            <label>User ID:</label>
+        </div>
+        <div class="col-75">
+            <label th:text="${deleteUser.user_id}"></label>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-50">
+            <label>Full Name:</label>
+        </div>
+        <div class="col-75">
+            <label th:text="${deleteUser.name}"></label>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-50">
+            <label>Date Of Birth: </label>
+        </div>
+        <div class="col-75">
+            <label th:text="${deleteUser.dateOfBirth}"></label>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-50">
+            <form action="/admin/users/deleteuser" th:method="POST">
+                <input type="submit" value="Delete user" style="background-color: red">
+                <input type="hidden" th:value="${deleteUser.user_id}" name="deleteUserId">
+                <input type="hidden" name="_method" th:value="DELETE">
+                <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+            </form>
+        </div>
+        <div class="col-75">
+            <form th:action="@{/admin/users/showusers}" method="GET">
+                <input type="submit" value="Cancel without deletion" style="width: 200px">
+            </form>
+
+        </div>
+    </div>
+</div>
+</body>
+
+</html>

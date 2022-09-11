@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="ISO-8859-1">
+    <title>User Info</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/CSS/account-layout.css}">
+
+</head>
+
+<body>
+<div th:replace="navBar-layout :: adminNavBar"></div>
+
+<div class="container">
+    <h3>User Information!!</h3>
+    <form th:action="@{/admin/users/update/{user_id}(user_id=${user.user_id})}" th:method="POST">
+        <div class="row">
+            <div class="col-50">
+                <label for="tittle">User-Id</label>
+            </div>
+            <div class="col-75" th:text="${user.user_id}"></div>
+
+            <div class="col-50">
+                <label for="username">Username</label>
+            </div>
+            <div class="col-75">
+                <input
+                        type="text"
+                        id="username"
+                        name="username"
+                        th:field="${user.username}"
+                        required="required"
+                />
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="col-50">
+                <label for="name">Fullname</label>
+            </div>
+            <div class="col-75">
+                <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        th:field="${user.name}"
+                        required="required"
+                />
+            </div>
+
+            <div class="col-50">
+                <label for="dateofbirth">Date Of Birth</label>
+            </div>
+            <div class="col-75">
+                <input
+                        type="text"
+                        id="dateofbirth"
+                        name="dateofbirth"
+                        th:field="${user.dateOfBirth}"
+                        required="required"
+                />
+            </div>
+        </div>
+
+        <div class="row">
+
+            <div class="col-50">
+                <label for="address">Address</label>
+            </div>
+            <div class="col-75">
+                <input
+                        type="text"
+                        id="address"
+                        name="address"
+                        th:field="${user.address}"
+                        required="required"
+                />
+            </div>
+
+
+            <div class="col-50">
+                <label for="number">Phone number</label>
+            </div>
+            <div class="col-75">
+                <input
+                        type="text"
+                        id="number"
+                        name="number"
+                        th:field="${user.number}"
+                        required="required"
+                />
+            </div>
+        </div>
+
+        <div class="row">
+
+            <div class="col-50">
+                <label for="address">Email</label>
+            </div>
+            <div class="col-75">
+                <input
+                        type="text"
+                        id="email"
+                        name="email"
+                        th:field="${user.email}"
+                        required="required"
+                />
+            </div>
+
+
+            <div class="col-50">
+                <label for="number">Role</label>
+            </div>
+            <div class="col-75">
+                <input
+                        type="text"
+                        id="role"
+                        name="role"
+                        th:field="${user.role}"
+                        required="required"
+                />
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-50"></div>
+            <div class="col-50"></div>
+            <div class="col-75">
+                <input type="submit" value="Submit"/>
+            </div>
+        </div>
+    </form>
+    <div>
+        <form th:action="@{/admin/users/showusers}">
+            <div class="row">
+                <div class="col-50"></div>
+                <div class="col-50"></div>
+                <div class="col-75">
+                    <input class="registerButton" type="submit" value="Back">
+                </div>
+            </div>
+        </form>
+    </div>
+
+
+</div>
+</body>
+
+</html>
