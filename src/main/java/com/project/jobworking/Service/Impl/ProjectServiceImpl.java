@@ -41,7 +41,7 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public List<Project> getByProjectName(String projectName){
-        return projectRepository.findByProject_nameContainingIgnoreCase(projectName);
+        return projectRepository.findByNameContainingIgnoreCase(projectName);
     }
 
     @Override
@@ -51,7 +51,7 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public List<Project> getByProjectNameAndCreater(String title, String author){
-        return projectRepository.findByProject_nameContainingIgnoreCaseAndCreatedByContainingIgnoreCase(title, author);
+        return projectRepository.findByNameContainingIgnoreCaseAndCreatedByContainingIgnoreCase(title, author);
     }
 
     @Override

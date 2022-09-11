@@ -12,7 +12,7 @@ import java.util.Set;
 public class Project extends BaseEntity {
 
     @Column
-    private String project_name;
+    private String name;
 
     @Column
     private String description;

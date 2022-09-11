@@ -14,7 +14,16 @@
 
         <form th:action="@{/register/save}" th:object="${newAccount}" method="POST">
 
-            <p><b>Account details</b></p>
+            <form th:action="@{/admin/users/showusers}">
+                <div class="row">
+                    <div class="col-75"></div>
+                    <div class="col-75">
+                        <input class="registerButton" type="submit" value="Back">
+                    </div>
+                    <p><b>Account details</b></p>
+
+                </div>
+            </form>
 
             <div class="row">
                 <div class="col-25">
@@ -88,14 +97,6 @@
             </div>
         </form>
 
-        <form th:action="@{/admin/users/showusers}">
-            <div class="row">
-                <div class="col-75"></div>
-                <div class="col-75">
-                    <input class="registerButton" type="submit" value="Back">
-                </div>
-            </div>
-        </form>
 
     </div>
 </div>

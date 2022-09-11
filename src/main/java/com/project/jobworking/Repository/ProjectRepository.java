@@ -12,9 +12,9 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
     Project findByName(String projectName);
 
     void deleteByName(String projectName);
-    List<Project> findByProject_nameContainingIgnoreCase(String name);
+    List<Project> findByNameContainingIgnoreCase(String name);
     List<Project> findByCreatedByContainingIgnoreCase(String createdBy);
-    List<Project> findByProject_nameContainingIgnoreCaseAndCreatedByContainingIgnoreCase(String title, String author);
+    List<Project> findByNameContainingIgnoreCaseAndCreatedByContainingIgnoreCase(String title, String author);
 
 
 }

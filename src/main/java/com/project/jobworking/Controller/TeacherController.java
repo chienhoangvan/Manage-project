@@ -69,7 +69,7 @@ public class TeacherController {
                                 @RequestParam Date endDate, @RequestParam String description,
                                 @RequestParam Boolean isUsed) {
         Project project = projectService.findById(projectId);
-        project.setProject_name(projectName);
+        project.setName(projectName);
         project.setEndDate(endDate);
         project.setDescription(description);
         project.setIsUsed(isUsed);
