@@ -3,13 +3,12 @@ package com.project.jobworking.Entity;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.util.Set;
 
 @Data
 @Entity
-public class Comment extends BaseEntity {
-    @Column
-    private String substance;
+public class Media extends BaseEntity {
+    @Column(name = "url")
+    private String url;
 
     @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.MERGE}, fetch = FetchType.LAZY)
     private Project project;
@@ -17,6 +16,9 @@ public class Comment extends BaseEntity {
     @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.MERGE}, fetch = FetchType.LAZY)
     private Job job;
 
-    @OneToMany(mappedBy = "comment", cascade = {CascadeType.REMOVE}, fetch = FetchType.LAZY, orphanRemoval = true)
-    private Set<Media> mediaList;
+    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.MERGE}, fetch = FetchType.LAZY)
+    private Report report;
+
+    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.MERGE}, fetch = FetchType.LAZY)
+    private Comment comment;
 }

@@ -28,4 +28,7 @@ public class Project extends BaseEntity {
 
     @OneToMany(mappedBy = "project", cascade = {CascadeType.REMOVE}, fetch = FetchType.LAZY, orphanRemoval = true)
     private Set<Job> jobs;
+
+    @OneToMany(mappedBy = "project", cascade = {CascadeType.REMOVE}, fetch = FetchType.LAZY, orphanRemoval = true)
+    private Set<Media> mediaList;
 }

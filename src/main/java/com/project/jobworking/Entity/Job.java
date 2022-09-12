@@ -32,4 +32,7 @@ public class Job extends BaseEntity {
 
     @OneToMany(mappedBy = "job", cascade = {CascadeType.REMOVE}, fetch = FetchType.LAZY, orphanRemoval = true)
     private Set<Comment> comments;
+
+    @OneToMany(mappedBy = "job", cascade = {CascadeType.REMOVE}, fetch = FetchType.LAZY, orphanRemoval = true)
+    private Set<Media> mediaList;
 }
