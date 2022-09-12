@@ -9,8 +9,8 @@ import java.util.Set;
 @Data
 @Entity
 public class Job extends BaseEntity {
-    @Column
-    private String job_name;
+    @Column(name = "job_name")
+    private String name;
 
     @Column
     private String description;
@@ -18,11 +18,11 @@ public class Job extends BaseEntity {
     @Column
     private String status;
 
-    @Column
-    private Date start_date;
+    @Column(name = "startDate")
+    private Date startDate;
 
-    @Column
-    private Date end_date;
+    @Column(name = "end_date")
+    private Date endDate;
 
     @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.MERGE}, fetch = FetchType.LAZY)
     private Project project;

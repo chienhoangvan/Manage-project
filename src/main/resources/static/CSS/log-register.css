@@ -109,7 +109,20 @@ input[type=submit].registerButton {
     color: white;
     margin-right: 10px;
     padding: 12px;
-    width: 250px;
+    width: 150px;
+    margin-top: 8px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    float: left;
+}
+
+input[type=submit].backButton {
+    background: url("../../Images/back-button-2.png") repeat center fixed;
+    margin-right: 10px;
+    padding: 12px;
+    width: 30px;
+    height: 30px;
     margin-top: 8px;
     border: none;
     border-radius: 4px;

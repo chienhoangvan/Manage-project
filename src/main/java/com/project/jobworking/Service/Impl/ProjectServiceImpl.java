@@ -50,24 +50,24 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public List<Project> getByProjectNameAndCreater(String title, String author){
-        return projectRepository.findByNameContainingIgnoreCaseAndCreatedByContainingIgnoreCase(title, author);
+    public List<Project> getByProjectNameAndCreater(String projectName, String createBy){
+        return projectRepository.findByNameContainingIgnoreCaseAndCreatedByContainingIgnoreCase(projectName, createBy);
     }
 
     @Override
     public List<Project> searchProjects(String projectName, String createBy){
 
-        List<Project> searchedBooks = new ArrayList<Project>();
+        List<Project> projectList = new ArrayList<Project>();
 
         if (projectName != null && createBy == null) {
-            searchedBooks = getByProjectName(projectName);
+            projectList = getByProjectName(projectName);
         } else if (projectName == null && createBy != null) {
-            searchedBooks = getByCreater(createBy);
+            projectList = getByCreater(createBy);
         } else if (projectName != null && createBy != null) {
-            searchedBooks = getByProjectNameAndCreater(projectName, createBy);
+            projectList = getByProjectNameAndCreater(projectName, createBy);
         }
 
-        return searchedBooks;
+        return projectList;
     }
 
     @Override

@@ -11,7 +11,7 @@ import java.util.Set;
 @Entity
 public class Project extends BaseEntity {
 
-    @Column
+    @Column(name = "project_name")
     private String name;
 
     @Column
@@ -20,7 +20,7 @@ public class Project extends BaseEntity {
     @Column
     private Boolean isUsed = false;
 
-    @Column
+    @Column(name = "end_date")
     private Date endDate;
 
     @OneToMany(mappedBy = "project", cascade = {CascadeType.REMOVE}, fetch = FetchType.LAZY, orphanRemoval = true)

@@ -14,7 +14,7 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
     void deleteByName(String projectName);
     List<Project> findByNameContainingIgnoreCase(String name);
     List<Project> findByCreatedByContainingIgnoreCase(String createdBy);
-    List<Project> findByNameContainingIgnoreCaseAndCreatedByContainingIgnoreCase(String title, String author);
+    List<Project> findByNameContainingIgnoreCaseAndCreatedByContainingIgnoreCase(String projectName, String createdBy);
 
 
 }

@@ -12,18 +12,18 @@
 <div class="wrapperRegister">
     <div class="containerRegister">
 
-        <form th:action="@{/register/save}" th:object="${newAccount}" method="POST">
-
-            <form th:action="@{/admin/users/showusers}">
-                <div class="row">
-                    <div class="col-75"></div>
-                    <div class="col-75">
-                        <input class="registerButton" type="submit" value="Back">
-                    </div>
-                    <p><b>Account details</b></p>
-
+        <form th:action="@{/admin/users/showusers}">
+            <div class="row">
+                <div class="col-25">
+                    <input class="backButton" type="submit" value="">
                 </div>
-            </form>
+                <div class="col-75">
+                    <p><b>Account details</b></p>
+                </div>
+
+            </div>
+        </form>
+        <form th:action="@{/register/save}" th:object="${newAccount}" method="POST">
 
             <div class="row">
                 <div class="col-25">
@@ -75,14 +75,14 @@
 
             <div class="row">
                 <div class="col-25">
-                    <label for="number">Email</label>
+                    <label for="email">Email</label>
                 </div>
                 <div class="col-75">
                     <input type="text" id="email" name="email" required="required">
                 </div>
 
                 <div class="col-25">
-                    <label for="address">Role</label>
+                    <label for="role">Role</label>
                 </div>
                 <div class="col-75">
                     <input type="text" id="role" name="role" required="required">
@@ -90,8 +90,14 @@
             </div>
 
             <div class="row">
-                <div class="col-75"></div>
+                <div class="col-25">
+                    <label for="MSSV">MSSV</label>
+                </div>
                 <div class="col-75">
+                    <input type="text" id="MSSV" name="MSSV" required="">
+                </div>
+                <div class="col-25"></div>
+                <div class="col-50">
                     <input class="registerButton" type="submit" value="Register">
                 </div>
             </div>

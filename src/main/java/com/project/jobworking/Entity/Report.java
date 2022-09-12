@@ -8,8 +8,8 @@ import javax.persistence.*;
 @Data
 @Entity
 public class Report extends BaseEntity {
-    @Column
-    private String report_name;
+    @Column(name = "report_name")
+    private String reportName;
 
     @Column
     private String substance;

@@ -35,7 +35,7 @@ public class User {
     private String address;
 
     @Column
-    private String identify;
+    private String MSSV;
 
     @Column
     private String email;
