@@ -37,7 +37,7 @@ public class TeacherController {
         return "teacher/teacher-home.html";
     }
 
-    //    --------------------Manage Project-----------------
+    /*--------------------Manage Project-----------------*/
     @GetMapping(value = "/projects")
     public String projects() {
         return "redirect:/teacher/projects/showProjects";
@@ -118,5 +118,7 @@ public class TeacherController {
     public String updateProjectInfo(Project project) {
         return "teacher/teacher-project-information-changed.html";
     }
+
+    /*-------------------Devide project to jobs-----------------*/
 
 }
