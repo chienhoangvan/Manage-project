@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="ISO-8859-1" />
+    <!--  <link rel="stylesheet" href="../../static/css/account-layout.css" />  -->
+    
+    <link rel="stylesheet" type="text/css" th:href="@{/CSS/account-layout.css}">
+    <title>Project Deleted</title>
+  </head>
+
+  <body>
+    <div th:replace="navBar-layout :: teacherNavBar"></div>
+
+    <div class="container">
+      <h3>Project is deleted successfully!</h3>
+
+      <div class="row">
+        <form th:action="@{/teacher/projects/showProjects}" method="GET">
+          <input type="submit" value="Go back to catalog" />
+        </form>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="ISO-8859-1"/>
+    <title>Projects</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/CSS/account-layout.css}">
+</head>
+
+<body>
+<div th:replace="navBar-layout :: teacherNavBar"></div>
+
+<div class="container">
+
+    <div class="nav management-bar">
+        <ul>
+            <li><a href="/teacher/projects/showProjects">Catalog</a></li>
+<!--            <li><a href="/api/excel/import">Import File-Working Book</a></li>-->
+<!--            <li><a href="/api/excel/export">Export File-Working Book</a></li>-->
+<!--            <li><a href="/api/excel/download">Download Template File </a></li>-->
+        </ul>
+    </div>
+
+    <div class="row">
+        <form th:action="@{/teacher/projects/showProjects}" method="GET">
+            <div class="col-25">
+                <label for="name">Project Name</label>
+            </div>
+            <div class="col-75">
+                <input type="text" id="name" name="name"/>
+            </div>
+
+            <div class="col-25">
+                <label for="createdBy">Creater</label>
+            </div>
+            <div class="col-75">
+                <input type="text" id="createdBy" name="createdBy"/>
+            </div>
+            <div>
+                <input type="submit" value="Search"/>
+            </div>
+        </form>
+
+        <div>
+            <a href="?">
+                <button type="button" class="submit-button">All Projects</button>
+            </a>
+        </div>
+
+        <form th:action="@{/teacher/projects/newProject}" method="GET">
+            <div>
+                <input
+                        type="submit"
+                        value="Add new project"
+                />
+            </div>
+        </form>
+    </div>
+
+    <div class="style-scroll">
+        <table th:if="${projects.size() > 0 }" id="tablestyle">
+            <tr>
+                <th>Project ID</th>
+                <th>Project Name</th>
+                <th>Description</th>
+                <th>Creater</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Status</th>
+            </tr>
+            <tr th:each="project : ${projects}">
+                <td th:text="${project.id}"></td>
+                <td th:text="${project.name}"></td>
+                <td th:text="${project.description}"></td>
+                <td th:text="${project.createdBy}"></td>
+                <td th:text="${project.modifiedDate}"></td>
+                <td th:text="${project.endDate}"></td>
+                <td th:text="${project.isUsed}"></td>
+                <td style="width: 240px">
+                    <a th:href="@{/teacher/projects/{id}(id=${project.id})}">
+                        <button type="button" class="submit-button" style="width: 110px">Change info</button>
+                    </a>
+                    <form th:action="@{/teacher/projects/areYouSureToDeleteProject}" method="GET">
+                        <input
+                                type="submit"
+                                value="Delete project"
+                                class="table"
+                                style="background-color: red; width: 110px"
+                        />
+                        <input
+                                type="hidden"
+                                name="id"
+                                th:value="${project.id}"
+                        />
+                    </form>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+</div>
+</body>
+</html>

@@ -53,26 +53,26 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
-    public List<Job> getByCreater(String createBy){
-        return jobRepository.findByCreatedByContainingIgnoreCase(createBy);
+    public List<Job> getByCreater(String createdBy){
+        return jobRepository.findByCreatedByContainingIgnoreCase(createdBy);
     }
 
     @Override
-    public List<Job> getByProjectNameAndCreater(String projectName, String createBy){
-        return jobRepository.findByProjectNameContainingIgnoreCaseAndCreatedByContainingIgnoreCase(projectName, createBy);
+    public List<Job> getByProjectNameAndCreater(String projectName, String createdBy){
+        return jobRepository.findByProjectNameContainingIgnoreCaseAndCreatedByContainingIgnoreCase(projectName, createdBy);
     }
 
     @Override
-    public List<Job> searchJobs(String projectName, String createBy){
+    public List<Job> searchJobs(String projectName, String createdBy){
 
         List<Job> jobList = new ArrayList<Job>();
 
-        if (projectName != null && createBy == null) {
+        if (projectName != null && createdBy == null) {
             jobList = findAllByProject(projectName);
-        } else if (projectName == null && createBy != null) {
-            jobList = getByCreater(createBy);
-        } else if (projectName != null && createBy != null) {
-            jobList = getByProjectNameAndCreater(projectName, createBy);
+        } else if (projectName == null && createdBy != null) {
+            jobList = getByCreater(createdBy);
+        } else if (projectName != null && createdBy != null) {
+            jobList = getByProjectNameAndCreater(projectName, createdBy);
         }
 
         return jobList;

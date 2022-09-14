@@ -18,11 +18,11 @@ public interface JobService {
 
     List<Job> findAllByProject(Long projectId);
 
-    List<Job> getByCreater(String createBy);
+    List<Job> getByCreater(String createdBy);
 
-    List<Job> getByProjectNameAndCreater(String projectName, String createBy);
+    List<Job> getByProjectNameAndCreater(String projectName, String createdBy);
 
-    List<Job> searchJobs(String projectName, String createBy);
+    List<Job> searchJobs(String projectName, String createdBy);
 
     void deleteById(Long jobId);
 

@@ -22,6 +22,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public Project save(Project project)
     {
+        project.setIsUsed(false);
         projectRepository.save(project);
         return project;
     }
@@ -45,8 +46,8 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public List<Project> getByCreater(String createBy){
-        return projectRepository.findByCreatedByContainingIgnoreCase(createBy);
+    public List<Project> getByCreater(String createdBy){
+        return projectRepository.findByCreatedByContainingIgnoreCase(createdBy);
     }
 
     @Override
@@ -55,16 +56,16 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public List<Project> searchProjects(String projectName, String createBy){
+    public List<Project> searchProjects(String projectName, String creatdeBy){
 
         List<Project> projectList = new ArrayList<Project>();
 
-        if (projectName != null && createBy == null) {
+        if (projectName != null && creatdeBy == null) {
             projectList = getByProjectName(projectName);
-        } else if (projectName == null && createBy != null) {
-            projectList = getByCreater(createBy);
-        } else if (projectName != null && createBy != null) {
-            projectList = getByProjectNameAndCreater(projectName, createBy);
+        } else if (projectName == null && creatdeBy != null) {
+            projectList = getByCreater(creatdeBy);
+        } else if (projectName != null && creatdeBy != null) {
+            projectList = getByProjectNameAndCreater(projectName, creatdeBy);
         }
 
         return projectList;

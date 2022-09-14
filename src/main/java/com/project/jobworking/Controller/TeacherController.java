@@ -6,6 +6,7 @@ import com.project.jobworking.Security.CurrentUserFinder;
 import com.project.jobworking.Service.ProjectService;
 import com.project.jobworking.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -44,8 +45,8 @@ public class TeacherController {
     }
 
     @GetMapping(value = "/projects/{id}")
-    public String viewProject(Model model, @PathVariable Long projectId) {
-        Project project = projectService.findById(projectId);
+    public String viewProject(Model model, @PathVariable Long id) {
+        Project project = projectService.findById(id);
         model.addAttribute("project", project);
         return "teacher/view-project.html";
     }
@@ -53,26 +54,25 @@ public class TeacherController {
     @GetMapping(value = "/projects/showProjects")
     public String showProjects(Model model,
                             @RequestParam(required = false) String projectName,
-                            @RequestParam(required = false) String createBy) {
+                            @RequestParam(required = false) String createdBy) {
         List<Project> projects;
-        if ((projectName == null || projectName.isEmpty()) && (createBy == null || createBy.isEmpty())) {
+        if ((projectName == null || projectName.isEmpty()) && (createdBy == null || createdBy.isEmpty())) {
             projects = projectService.findAll();
         } else {
-            projects = projectService.searchProjects(projectName, createBy);
+            projects = projectService.searchProjects(projectName, createdBy);
         }
         model.addAttribute("projects", projects);
-        return "employee/employee-show-books.html";
+        return "teacher/teacher-show-projects.html";
     }
 
-    @PostMapping(value = "/projects/update/{projectId}")
-    public String updateProject(@PathVariable Long projectId, @RequestParam String projectName,
-                                @RequestParam Date endDate, @RequestParam String description,
-                                @RequestParam Boolean isUsed) {
-        Project project = projectService.findById(projectId);
-        project.setName(projectName);
+    @PostMapping(value = "/projects/update/{id}")
+    public String updateProject(@PathVariable Long id, @RequestParam String name,
+                                @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate,
+                                @RequestParam String description) {
+        Project project = projectService.findById(id);
+        project.setName(name);
         project.setEndDate(endDate);
         project.setDescription(description);
-        project.setIsUsed(isUsed);
         projectService.save(project);
         return "teacher/teacher-project-information-changed.html";
     }
@@ -90,15 +90,15 @@ public class TeacherController {
     }
 
     @GetMapping(value = "/projects/areYouSureToDeleteProject")
-    public String areYouSureToDeleteProject(@RequestParam Long projectId, Model model) {
-        Project project = projectService.findById(projectId);
-        model.addAttribute("deleteProject", project);
+    public String areYouSureToDeleteProject(@RequestParam Long id, Model model) {
+        Project project = projectService.findById(id);
+        model.addAttribute("project", project);
         return "teacher/teacher-delete-project.html";
     }
 
     @PostMapping(value = "/projects/deleteProject")
-    public String deleteProject(@RequestParam Long projectId) {
-        projectService.deleteById(projectId);
+    public String deleteProject(@RequestParam Long id) {
+        projectService.deleteById(id);
         return "redirect:/teacher/projects/projectDeleted";
     }
 
@@ -108,16 +108,12 @@ public class TeacherController {
     }
 
     @GetMapping(value = "/projects/changeProjectInfo")
-    public String changeProjectInfo(@RequestParam Long projectId, Model model) {
-        Project project = projectService.findById(projectId);
+    public String changeProjectInfo(@RequestParam Long id, Model model) {
+        Project project = projectService.findById(id);
         model.addAttribute("project", project);
         return "teacher/teacher-change-project-info.html";
     }
 
-    @PutMapping(value = "/projects/saveProjectChange")
-    public String updateProjectInfo(Project project) {
-        return "teacher/teacher-project-information-changed.html";
-    }
 
     /*-------------------Devide project to jobs-----------------*/
 

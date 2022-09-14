@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="ISO-8859-1"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/CSS/account-layout.css}">
+    <title>New Project</title>
+</head>
+
+<body>
+<div th:replace="navBar-layout :: teacherNavBar"></div>
+
+
+<div class="container">
+    <h3>Add new project to catalog</h3>
+
+    <form
+            th:action="@{/teacher/projects/save}"
+            th:object="${project}"
+            method="POST"
+    >
+        <div class="row">
+            <div class="col-250">
+                <div class="row">
+                    <div class="col-50">
+                        <label for="id">Project ID</label>
+                    </div>
+                    <div class="col-75">
+                        <input
+                                type="text"
+                                id="id"
+                                name="id"
+                                th:field="${project.id}"
+                                required="required"
+                        />
+                    </div>
+
+                    <div class="col-50">
+                        <label for="name">Project Name</label>
+                    </div>
+
+                    <div class="col-75">
+                        <input
+                                type="text"
+                                id="name"
+                                name="name"
+                                th:field="${project.name}"
+                                required="required"
+                        />
+                    </div>
+
+                </div>
+
+
+                <div class="row">
+
+                    <div class="col-50">
+                        <label for="description">Description</label>
+                    </div>
+                    <div class="col-75">
+                        <input
+                                type="text"
+                                id="description"
+                                name="description"
+                                th:field="${project.description}"
+                                required="required"
+                        />
+                    </div>
+
+                    <div class="col-50">
+                        <label for="endDate">End Date</label>
+                    </div>
+                    <div class="col-75">
+                        <input
+                                type="text"
+                                id="endDate"
+                                name="endDate"
+                                th:field="${project.endDate}"
+                                required="required"
+                        />
+                    </div>
+                </div>
+            </div>
+<!--            <div class="col-75">-->
+<!--                <label for="Image">Image: </label>-->
+<!--            </div>-->
+        </div>
+
+
+        <div class="row">
+            <div class="col-50"></div>
+            <div class="col-50"></div>
+            <div class="col-50"></div>
+            <div class="col-75">
+                <input type="submit" value="Submit"/>
+            </div>
+        </div>
+    </form>
+    <form th:action="@{/teacher/projects/showProjects}">
+        <div class="row">
+            <div class="col-50"></div>
+            <div class="col-50"></div>
+            <div class="col-50"></div>
+            <div class="col-75">
+                <input class="registerButton" type="submit" value="Back">
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>

@@ -18,7 +18,7 @@ public class Project extends BaseEntity {
     private String description;
 
     @Column
-    private Boolean isUsed = false;
+    private Boolean isUsed ;
 
     @Column(name = "end_date")
     private Date endDate;

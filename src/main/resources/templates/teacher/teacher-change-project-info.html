@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="ISO-8859-1" />
+    <link rel="stylesheet" type="text/css" th:href="@{/CSS/account-layout.css}">
+    <title>Change Book Info</title>
+  </head>
+
+  <body>
+    <div th:replace="navBar-layout :: teacherNavBar"></div>
+    
+
+    <div class="container">
+      <h3>Change project information</h3>
+
+      <form
+        action="/teacher/projects/saveProjectChange"
+        th:object="${project}"
+        th:method="PUT"
+      >
+        <div class="row">
+          <div class="col-50">
+            <label>ID: </label>
+          </div>
+          <div class="col-75">
+            <label th:text="${project.projectCode}"></label>
+            <input
+              type="hidden"
+              th:value="${project.projectCode}"
+              th:field="${project.projectCode}"
+            />
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-50">
+            <label>Project Name: </label>
+          </div>
+          <div class="col-75">
+            <input
+              type="text"
+              th:value="${project.name}"
+              th:field="${project.name}"
+              required="required"
+            />
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-50">
+            <label>Creater:</label>
+          </div>
+          <div class="col-75">
+            <input
+              type="text"
+              th:value="${project.createBy}"
+              th:field="${project.createBy}"
+              required="required"
+            />
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-50"></div>
+          <div class="col-75">
+            <input type="submit" value="Submit" />
+            <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
+            <input type="hidden" name="_method" th:value="PUT" />
+          </div>
+        </div>
+      </form>
+    </div>
+  </body>
+</html>
