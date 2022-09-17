@@ -1,13 +1,18 @@
 package com.project.jobworking.Service.Impl;
 
 import com.project.jobworking.Entity.Project;
+import com.project.jobworking.Entity.User;
 import com.project.jobworking.Repository.ProjectRepository;
 import com.project.jobworking.Repository.UserRepository;
 import com.project.jobworking.Service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -81,5 +86,27 @@ public class ProjectServiceImpl implements ProjectService {
         Optional<Project> project = projectRepository.findById(projectId);
         if (project.isPresent()) return true;
         return false;
+    }
+
+    @Override
+    public void updateProject(Long id,String name, Date endDate, String description) {
+        Project project = this.findById(id);
+        project.setName(name);
+        project.setEndDate(endDate);
+        project.setDescription(description);
+        this.save(project);
+    }
+
+    @Override
+    public void assignProject(Long projectId, String MSSV) {
+        Optional<User> userOptional = userRepository.findByMSSVAndRole(MSSV, "student");
+        if (!userOptional.isPresent()) return;
+        Project project = this.findById(projectId);
+        project.setIsUsed(true);
+        projectRepository.save(project);
+
+        User user = userOptional.get();
+        user.setProject(project);
+        userRepository.save(user);
     }
 }

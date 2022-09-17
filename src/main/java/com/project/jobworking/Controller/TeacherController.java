@@ -2,6 +2,8 @@ package com.project.jobworking.Controller;
 
 import com.project.jobworking.Entity.Project;
 import com.project.jobworking.Entity.User;
+import com.project.jobworking.Repository.ProjectRepository;
+import com.project.jobworking.Repository.UserRepository;
 import com.project.jobworking.Security.CurrentUserFinder;
 import com.project.jobworking.Service.ProjectService;
 import com.project.jobworking.Service.UserService;
@@ -12,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -28,6 +31,12 @@ public class TeacherController {
 
     @Autowired
     private ProjectService projectService;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private ProjectRepository projectRepository;
 
     @GetMapping
     public String employeeHomePage(Model model) {
@@ -51,6 +60,13 @@ public class TeacherController {
         return "teacher/view-project.html";
     }
 
+    @GetMapping(value = "/projects/view/{id}")
+    public String viewProjectPublic(Model model, @PathVariable Long id) {
+        Project project = projectService.findById(id);
+        model.addAttribute("project", project);
+        return "teacher/view-project-public.html";
+    }
+
     @GetMapping(value = "/projects/showProjects")
     public String showProjects(Model model,
                             @RequestParam(required = false) String projectName,
@@ -65,15 +81,26 @@ public class TeacherController {
         return "teacher/teacher-show-projects.html";
     }
 
+    @GetMapping(value = "/projects/showOwnProjects")
+    public String showOwnProjects(Model model,
+                               @RequestParam(required = false) String projectName) {
+        List<Project> projects;
+        Long currentUserId = currentUserFinder.getCurrentUserId();
+        User currentUser = userService.findById(currentUserId);
+        if ((projectName == null || projectName.isEmpty())) {
+            projects = projectService.getByCreater(currentUser.getUsername());
+        } else {
+            projects = projectService.getByProjectName(projectName);
+        }
+        model.addAttribute("projects", projects);
+        return "teacher/teacher-show-own-projects.html";
+    }
+
     @PostMapping(value = "/projects/update/{id}")
     public String updateProject(@PathVariable Long id, @RequestParam String name,
                                 @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate,
                                 @RequestParam String description) {
-        Project project = projectService.findById(id);
-        project.setName(name);
-        project.setEndDate(endDate);
-        project.setDescription(description);
-        projectService.save(project);
+        projectService.updateProject(id,name,endDate,description);
         return "teacher/teacher-project-information-changed.html";
     }
 
@@ -112,6 +139,25 @@ public class TeacherController {
         Project project = projectService.findById(id);
         model.addAttribute("project", project);
         return "teacher/teacher-change-project-info.html";
+    }
+
+    @GetMapping(value = "/students/showStudents/{projectId}")
+    public String showUsers(Model model, @PathVariable Long projectId,
+                            @RequestParam(required = false) String name,
+                            @RequestParam(required = false) String MSSV) {
+        List<User> users;
+        users = userService.shownStudents(name, MSSV);
+        Project project = projectService.findById(projectId);
+        model.addAttribute("users", users);
+        model.addAttribute("project", project);
+        return "teacher/teacher-assign-project.html";
+    }
+
+    @PostMapping(value = "/projects/assign/{MSSV}")
+    public String assignProject(@RequestParam Long projectId, @PathVariable String MSSV) {
+//        Long id = Long.parseLong(projectId);
+        projectService.assignProject(projectId, MSSV);
+        return "teacher/teacher-assigned.html";
     }
 
 

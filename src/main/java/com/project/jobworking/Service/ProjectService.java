@@ -2,6 +2,7 @@ package com.project.jobworking.Service;
 
 import com.project.jobworking.Entity.Project;
 
+import java.util.Date;
 import java.util.List;
 
 public interface ProjectService {
@@ -23,4 +24,10 @@ public interface ProjectService {
     void deleteById(Long projectId);
 
     boolean checkAvailabilityById(Long projectId);
+
+    void updateProject(Long id, String name, Date endDate, String description);
+
+    void assignProject(Long projectId, String MSSV);
+
+
 }

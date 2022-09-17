@@ -1,22 +1,25 @@
 package com.project.jobworking.Service;
 
 import com.project.jobworking.Entity.User;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public interface UserService {
-    public User save(User user);
+    User save(User user);
 
-    public void saveById(Long userId);
+    void saveById(Long userId);
 
-    public User findById(Long id);
+    User findById(Long id);
 
-    public List<User> findAll();
+    List<User> findAll();
 
-    public List<User> getByName(String name);
+    List<User> getByName(String name);
 
-    public User getByUsername(String username);
+    User getByUsername(String username);
+    void deleteById(Long userId);
 
-    public void deleteById(Long userId);
+    List<User> shownStudents(String name, String MSSV);
 }

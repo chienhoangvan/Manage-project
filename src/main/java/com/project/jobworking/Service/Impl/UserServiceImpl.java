@@ -5,6 +5,7 @@ import com.project.jobworking.Repository.UserRepository;
 import com.project.jobworking.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,6 +55,20 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteById(Long userId) {
         userRepository.deleteById(userId);
+    }
+
+    @Override
+    public List<User> shownStudents(String name, String MSSV) {
+        List<User> users;
+        if (MSSV != null && !MSSV.isEmpty()) {
+            users = new ArrayList<User>();
+            users.add(userRepository.findByMSSVAndRole(MSSV, "student").orElse(null));
+        } else if (name != null && !name.isEmpty()) {
+            users = userRepository.findByUsernameAndRole(name, "student");
+        } else {
+            users = userRepository.findAllByRole("student");
+        }
+        return users;
     }
 
 }

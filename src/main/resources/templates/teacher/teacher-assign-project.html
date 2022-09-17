@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="ISO-8859-1">
+    <link rel="stylesheet" type="text/css" th:href="@{/CSS/account-layout.css}">
+    <!--<link rel="stylesheet" href="../../static/css/account-layout.css">-->
+    <title>Students</title>
+</head>
+
+<body>
+
+<body>
+<div th:replace="navBar-layout :: teacherNavBar"></div>
+
+
+<div class="container">
+
+    <div class="nav management-bar">
+        <ul>
+            <li><a href="/admin/users/showusers">Students</a></li>
+            <!--            <li><a href="/api/excel/exportusers">Export File Users to Excel</a></li>-->
+        </ul>
+    </div>
+
+
+    <div class="row">
+
+        <form th:action="@{/teacher/students/showStudents/{projectId}(projectId=${project.id})}" method="GET">
+            <div class="col-25">
+                <label for="name">Name</label>
+            </div>
+            <div class="col-75">
+                <input type="text" id="name" name="name">
+            </div>
+            <div class="col-25">
+                <label for="MSSV">MSSV</label>
+            </div>
+            <div class="col-75">
+                <input type="text" id="MSSV" name="MSSV">
+            </div>
+            <div>
+                <input type="submit" value="Search">
+            </div>
+        </form>
+
+        <div>
+            <a href="?">
+                <button type="button" class="submit-button">Show all student</button>
+            </a>
+        </div>
+
+    </div>
+
+
+    <div class="style-scroll">
+        <table id="tablestyle">
+            <tr>
+                <th>User ID</th>
+                <th>Name</th>
+                <th>MSSV</th>
+                <th>Date of Birth</th>
+                <th>Address</th>
+                <th>Number</th>
+                <th>Email</th>
+                <th style="width: 150px">Action</th>
+            </tr>
+
+            <tr th:each="user : ${users}">
+
+                <td th:text="${user.user_id}"></td>
+                <td th:text="${user.name}"></td>
+                <td th:text="${user.MSSV}"></td>
+                <td th:text="${user.dateOfBirth}"></td>
+                <td th:text="${user.address}"></td>
+                <td th:text="${user.number}"></td>
+                <td th:text="${user.email}"></td>
+                <td style="width: 240px">
+                    <form th:action="@{/teacher/projects/assign/{MSSV}(MSSV=${user.MSSV})}" method="post">
+                        <input class="assignProject" type="submit" value="">
+                        <input
+                                type="hidden"
+                                name="projectId"
+                                th:value="${project.id}"
+                        />
+                    </form>
+
+                </td>
+            </tr>
+
+        </table>
+    </div>
+
+</div>
+</body>
+
+</html>

@@ -200,3 +200,57 @@ input[type="submit"], .submit-button {
     -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
     background-color: #F5F5F5;
 }
+
+/*------------------------Button--------------------*/
+
+input[type=submit].updateButton {
+    background: url("../../Images/update-button.png") repeat center fixed;
+    margin-right: 10px;
+    padding: 12px;
+    width: 30px;
+    height: 30px;
+    margin-top: 8px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    float: left;
+}
+
+input[type=submit].deleteButton {
+    background: url("../../Images/delete.png") repeat center fixed;
+    margin-right: 10px;
+    padding: 12px;
+    width: 30px;
+    height: 30px;
+    margin-top: 8px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    float: left;
+}
+
+input[type=submit].assignButton {
+    background: url("../../Images/assign.png") repeat center fixed;
+    margin-right: 10px;
+    padding: 12px;
+    width: 30px;
+    height: 30px;
+    margin-top: 8px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    float: left;
+}
+
+input[type=submit].assignProject {
+    background: url("../../Images/assign-project.png") repeat center fixed;
+    margin-right: 10px;
+    padding: 12px;
+    width: 30px;
+    height: 30px;
+    margin-top: 8px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    float: left;
+}
