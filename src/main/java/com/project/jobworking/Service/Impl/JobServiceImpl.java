@@ -2,18 +2,25 @@ package com.project.jobworking.Service.Impl;
 
 import com.project.jobworking.Entity.Job;
 import com.project.jobworking.Entity.Project;
+import com.project.jobworking.Entity.User;
 import com.project.jobworking.Repository.JobRepository;
+import com.project.jobworking.Repository.UserRepository;
 import com.project.jobworking.Service.JobService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class JobServiceImpl implements JobService {
     @Autowired
     private JobRepository jobRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Override
     public Job save(Job job)
@@ -83,4 +90,26 @@ public class JobServiceImpl implements JobService {
         jobRepository.deleteById(jobId);
     }
 
+    @Override
+    public void updateJob(Long id, String name,Date startDate, Date endDate, String description, String status) {
+        Job job = this.findById(id);
+        job.setName(name);
+        job.setStartDate(startDate);
+        job.setEndDate(endDate);
+        job.setDescription(description);
+        job.setStatus(status);
+        this.save(job);
+    }
+
+    @Override
+    public void assignJob(Long jobId, String MSSV) {
+        Optional<User> userOptional = userRepository.findByMSSVAndRole(MSSV, "student");
+        if (!userOptional.isPresent()) return;
+        User user = userOptional.get();
+        Job job = this.findById(jobId);
+        job.setStatus("doing");
+        job.setUser(user);
+        jobRepository.save(job);
+
+    }
 }

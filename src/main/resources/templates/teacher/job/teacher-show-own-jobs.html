@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="ISO-8859-1"/>
+    <title>My Jobs</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/CSS/account-layout.css}">
+</head>
+
+<body>
+<div th:replace="navBar-layout :: teacherNavBar"></div>
+
+<div class="container">
+
+
+    <div class="row">
+        <form th:action="@{/teacher/jobs/showOwnJobs}" method="GET">
+            <div class="col-25">
+                <label for="name">Job Name</label>
+            </div>
+            <div class="col-75">
+                <input type="text" id="name" name="name"/>
+            </div>
+
+            <div class="col-25">
+            </div>
+            <div class="col-75">
+            </div>
+            <div>
+                <input type="submit" value="Search"/>
+            </div>
+        </form>
+
+        <div>
+            <a href="?">
+                <button type="button" class="submit-button">All Jobs</button>
+            </a>
+        </div>
+
+        <form th:action="@{/teacher/projects/showOwnProjects}" method="GET">
+            <div>
+                <input
+                        type="submit"
+                        value="Create new job"
+                />
+            </div>
+        </form>
+    </div>
+
+    <div class="style-scroll">
+        <table th:if="${jobs.size() > 0 }" id="tablestyle">
+            <tr>
+                <th>Job ID</th>
+                <th>Project</th>
+                <th>Job Name</th>
+                <th>Description</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+            <tr th:each="job : ${jobs}">
+                <td th:text="${job.id}"></td>
+                <td th:text="${job.project.name}"></td>
+                <td th:text="${job.name}"></td>
+                <td th:text="${job.description}"></td>
+                <td th:text="${job.startDate}"></td>
+                <td th:text="${job.endDate}"></td>
+                <td th:text="${job.status}"></td>
+                <td style="width: 240px">
+                    <a th:href="@{/teacher/jobs/{id}(id=${job.id})}">
+                        <input class="updateButton" type="submit" value="">
+                    </a>
+                    <form th:action="@{/teacher/jobs/areYouSureToDeleteJob}" method="GET">
+                        <input class="deleteButton" type="submit" value="">
+                        <input
+                                type="hidden"
+                                name="id"
+                                th:value="${job.id}"
+                        />
+                    </form>
+                    <a th:href="@{/teacher/students/showJobStudents/{jobId}(jobId=${job.id})}">
+                        <input class="assignButton" type="submit" value="">
+                    </a>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+</div>
+</body>
+</html>

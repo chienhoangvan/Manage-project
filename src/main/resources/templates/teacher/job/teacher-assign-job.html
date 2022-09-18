@@ -18,15 +18,14 @@
 
     <div class="nav management-bar">
         <ul>
-            <li><a href="/admin/users/showusers">Students</a></li>
-            <!--            <li><a href="/api/excel/exportusers">Export File Users to Excel</a></li>-->
+            <li> Students</li>
         </ul>
     </div>
 
 
     <div class="row">
 
-        <form th:action="@{/teacher/students/showStudents/{projectId}(projectId=${project.id})}" method="GET">
+        <form th:action="@{/teacher/students/showStudents/{jobId}(jobId=${job.id})}" method="GET">
             <div class="col-25">
                 <label for="name">Name</label>
             </div>
@@ -76,12 +75,12 @@
                 <td th:text="${user.number}"></td>
                 <td th:text="${user.email}"></td>
                 <td style="width: 240px">
-                    <form th:action="@{/teacher/projects/assign/{MSSV}(MSSV=${user.MSSV})}" method="post">
+                    <form th:action="@{/teacher/jobs/assign/{MSSV}(MSSV=${user.MSSV})}" method="post">
                         <input class="assignProject" type="submit" value="">
                         <input
                                 type="hidden"
-                                name="projectId"
-                                th:value="${project.id}"
+                                name="jobId"
+                                th:value="${job.id}"
                         />
                     </form>
 

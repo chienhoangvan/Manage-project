@@ -3,6 +3,7 @@ package com.project.jobworking.Service;
 import com.project.jobworking.Entity.Job;
 import com.project.jobworking.Entity.Project;
 
+import java.util.Date;
 import java.util.List;
 
 public interface JobService {
@@ -26,4 +27,7 @@ public interface JobService {
 
     void deleteById(Long jobId);
 
+    void updateJob(Long id, String name,Date startDate, Date endDate, String description, String status);
+
+    void assignJob(Long projectId, String MSSV);
 }
