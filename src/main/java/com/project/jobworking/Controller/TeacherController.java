@@ -1,10 +1,12 @@
 package com.project.jobworking.Controller;
 
+import com.project.jobworking.Entity.Job;
 import com.project.jobworking.Entity.Project;
 import com.project.jobworking.Entity.User;
 import com.project.jobworking.Repository.ProjectRepository;
 import com.project.jobworking.Repository.UserRepository;
 import com.project.jobworking.Security.CurrentUserFinder;
+import com.project.jobworking.Service.JobService;
 import com.project.jobworking.Service.ProjectService;
 import com.project.jobworking.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +33,9 @@ public class TeacherController {
 
     @Autowired
     private ProjectService projectService;
+
+    @Autowired
+    private JobService jobService;
 
     @Autowired
     private UserRepository userRepository;
@@ -155,12 +160,25 @@ public class TeacherController {
 
     @PostMapping(value = "/projects/assign/{MSSV}")
     public String assignProject(@RequestParam Long projectId, @PathVariable String MSSV) {
-//        Long id = Long.parseLong(projectId);
         projectService.assignProject(projectId, MSSV);
         return "teacher/teacher-assigned.html";
     }
 
-
     /*-------------------Devide project to jobs-----------------*/
 
+    @GetMapping(value = "/jobs/newJob")
+    public String newJob(Model model,@RequestParam Long projectId ) {
+        Project project = projectService.findById(projectId);
+        model.addAttribute("project", project);
+        model.addAttribute("job", new Job());
+        return "teacher/teacher-new-job.html";
+    }
+
+    @PostMapping(value = "/jobs/save")
+    public String saveJob(Job job, @RequestParam Long projectId) {
+        Project project = projectService.findById(projectId);
+        job.setProject(project);
+        jobService.save(job);
+        return "teacher/teacher-job-saved.html";
+    }
 }

@@ -89,6 +89,14 @@
                     <a th:href="@{/teacher/students/showStudents/{projectId}(projectId=${project.id})}">
                         <input class="assignButton" type="submit" value="">
                     </a>
+                    <form th:action="@{/teacher/jobs/newJob}" method="GET">
+                        <input class="createJobButton" type="submit" value="">
+                            <input
+                                    type="hidden"
+                                    name="projectId"
+                                    th:value="${project.id}"
+                            />
+                    </form>
                 </td>
             </tr>
         </table>

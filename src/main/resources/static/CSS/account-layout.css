@@ -254,3 +254,16 @@ input[type=submit].assignProject {
     cursor: pointer;
     float: left;
 }
+
+input[type=submit].createJobButton {
+    background: url("../../Images/create-job.png") repeat center fixed;
+    margin-right: 10px;
+    padding: 12px;
+    width: 30px;
+    height: 30px;
+    margin-top: 8px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    float: left;
+}
