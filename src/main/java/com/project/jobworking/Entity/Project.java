@@ -20,6 +20,12 @@ public class Project extends BaseEntity {
     @Column
     private Boolean isUsed ;
 
+    @Column(name = "progress")
+    private String progress;
+
+    @Column(name = "start_date")
+    private Date startDate;
+
     @Column(name = "end_date")
     private Date endDate;
 

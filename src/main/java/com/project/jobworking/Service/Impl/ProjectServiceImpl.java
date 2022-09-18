@@ -89,9 +89,10 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public void updateProject(Long id,String name, Date endDate, String description) {
+    public void updateProject(Long id,String name,Date startDate, Date endDate, String description) {
         Project project = this.findById(id);
         project.setName(name);
+        project.setStartDate(startDate);
         project.setEndDate(endDate);
         project.setDescription(description);
         this.save(project);

@@ -104,9 +104,10 @@ public class TeacherController {
 
     @PostMapping(value = "/projects/update/{id}")
     public String updateProject(@PathVariable Long id, @RequestParam String name,
+                                @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
                                 @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate,
                                 @RequestParam String description) {
-        projectService.updateProject(id,name,endDate,description);
+        projectService.updateProject(id,name,startDate,endDate,description);
         return "teacher/project/teacher-project-information-changed.html";
     }
 

@@ -13,18 +13,15 @@
 
 
 <div class="container">
-    <h3>Update Project information:</h3>
+    <h3>Project information:</h3>
 
     <form th:action="@{/teacher/projects/update/{id}(id=${project.id})}" th:method="POST">
         <div class="row">
             <div class="col-50">
                 <label for="id">Project ID</label>
             </div>
-            <div class="col-75" th:text="${project.id}"></div>
-        </div>
+            <label class="col-75" th:text="${project.id}"></label>
 
-
-        <div class="row">
             <div class="col-50">
                 <label for="name">Project Name</label>
             </div>
@@ -37,6 +34,10 @@
                         required="required"
                 />
             </div>
+        </div>
+
+
+        <div class="row">
             <div class="col-50">
                 <label for="description">Description</label>
             </div>
@@ -49,9 +50,26 @@
                         required="required"
                 />
             </div>
+
+            <div class="col-50">
+                <label for="isUsed">Status</label>
+            </div>
+            <label class="col-75" th:text="${project.isUsed}"></label>
         </div>
 
         <div class="row">
+            <div class="col-50">
+                <label for="startDate">Start Date</label>
+            </div>
+            <div class="col-75">
+                <input
+                        type="text"
+                        id="startDate"
+                        name="startDate"
+                        th:field="${project.startDate}"
+                        required="required"
+                />
+            </div>
             <div class="col-50">
                 <label for="endDate">End Date</label>
             </div>
@@ -65,10 +83,6 @@
                 />
             </div>
 
-            <div class="col-50">
-                <label for="isUsed">Status</label>
-            </div>
-            <div class="col-75" th:text="${project.isUsed}"></div>
         </div>
 
 <!--        <div class="row">-->

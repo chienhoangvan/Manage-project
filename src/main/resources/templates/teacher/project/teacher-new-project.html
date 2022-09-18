@@ -21,18 +21,6 @@
         <div class="row">
             <div class="col-250">
                 <div class="row">
-                    <div class="col-50">
-                        <label for="id">Project ID</label>
-                    </div>
-                    <div class="col-75">
-                        <input
-                                type="text"
-                                id="id"
-                                name="id"
-                                th:field="${project.id}"
-                                required="required"
-                        />
-                    </div>
 
                     <div class="col-50">
                         <label for="name">Project Name</label>
@@ -48,11 +36,6 @@
                         />
                     </div>
 
-                </div>
-
-
-                <div class="row">
-
                     <div class="col-50">
                         <label for="description">Description</label>
                     </div>
@@ -62,6 +45,23 @@
                                 id="description"
                                 name="description"
                                 th:field="${project.description}"
+                                required="required"
+                        />
+                    </div>
+
+                </div>
+
+
+                <div class="row">
+                    <div class="col-50">
+                        <label for="startDate">Start Date</label>
+                    </div>
+                    <div class="col-75">
+                        <input
+                                type="text"
+                                id="startDate"
+                                name="startDate"
+                                th:field="${project.startDate}"
                                 required="required"
                         />
                     </div>

@@ -30,4 +30,8 @@ public interface JobService {
     void updateJob(Long id, String name,Date startDate, Date endDate, String description, String status);
 
     void assignJob(Long projectId, String MSSV);
+
+//    List<Job> findAllByUser(Long userId);
+//
+//    List<Job> getByProjectNameAndUser(String projectName, Long userId);
 }

@@ -25,7 +25,7 @@ public interface ProjectService {
 
     boolean checkAvailabilityById(Long projectId);
 
-    void updateProject(Long id, String name, Date endDate, String description);
+    void updateProject(Long id, String name,Date startDate, Date endDate, String description);
 
     void assignProject(Long projectId, String MSSV);
 

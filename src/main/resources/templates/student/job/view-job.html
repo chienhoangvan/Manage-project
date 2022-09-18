@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="ISO-8859-1"/>
+    <!-- <link rel="stylesheet" href="../../static/css/account-layout.css" /> -->
+
+    <link rel="stylesheet" type="text/css" th:href="@{/CSS/account-layout.css}">
+    <title>View Job</title>
+</head>
+
+<body>
+<div th:replace="navBar-layout :: studentNavBar"></div>
+
+
+<div class="container">
+    <h3>Job information:</h3>
+
+    <div class="row">
+        <div class="col-50">
+            <label for="id">Job ID</label>
+        </div>
+        <div class="col-75" th:text="${job.id}"></div>
+
+        <div class="col-50">
+            <label for="name">Job Name</label>
+        </div>
+        <div class="col-75">
+            <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    th:field="${job.name}"
+                    required="required"
+            />
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-50">
+            <label for="description">Description</label>
+        </div>
+        <div class="col-75">
+            <input
+                    type="text"
+                    id="description"
+                    name="description"
+                    th:field="${job.description}"
+                    required="required"
+            />
+        </div>
+
+        <div class="col-50">
+            <label for="status">Status</label>
+        </div>
+        <div class="col-75">
+            <input
+                    type="text"
+                    id="status"
+                    name="status"
+                    th:field="${job.status}"
+                    required="required"
+            />
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-50">
+            <label for="startDate">Start Date</label>
+        </div>
+        <div class="col-75">
+            <input
+                    type="text"
+                    id="startDate"
+                    name="startDate"
+                    th:field="${job.startDate}"
+                    required="required"
+            />
+        </div>
+
+        <div class="col-50">
+            <label for="endDate">End Date</label>
+        </div>
+        <div class="col-75">
+            <input
+                    type="text"
+                    id="endDate"
+                    name="endDate"
+                    th:field="${job.endDate}"
+                    required="required"
+            />
+        </div>
+    </div>
+
+    <div>
+        <form th:action="@{/student/jobs/showOwnJobs}">
+            <div class="row">
+                <div class="col-50"></div>
+                <div class="col-50"></div>
+                <div class="col-75">
+                    <input class="registerButton" type="submit" value="Back">
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>
