@@ -1,20 +1,19 @@
 package com.project.jobworking.Controller;
 
+import com.project.jobworking.Entity.Comment;
 import com.project.jobworking.Entity.Job;
 import com.project.jobworking.Entity.Project;
 import com.project.jobworking.Entity.User;
 import com.project.jobworking.Repository.JobRepository;
 import com.project.jobworking.Security.CurrentUserFinder;
+import com.project.jobworking.Service.CommentService;
 import com.project.jobworking.Service.JobService;
 import com.project.jobworking.Service.ProjectService;
 import com.project.jobworking.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Objects;
@@ -37,6 +36,9 @@ public class StudentController {
     @Autowired
     private JobRepository jobRepository;
 
+    @Autowired
+    private CommentService commentService;
+
     @GetMapping
     public String employeeHomePage(Model model) {
         Long currentUserId = currentUserFinder.getCurrentUserId();
@@ -55,7 +57,10 @@ public class StudentController {
             project = projectService.findById(currentUser.getProject().getId());
 
         } else project = null;
+        List<Comment> commentList = commentService.findAllByProject(project);
         model.addAttribute("project", project);
+        model.addAttribute("comments", commentList);
+        model.addAttribute("comment", new Comment());
         return "student/project/student-view-project.html";
     }
 
@@ -78,7 +83,27 @@ public class StudentController {
     @GetMapping(value = "/jobs/{id}")
     public String viewJob(Model model, @PathVariable Long id) {
         Job job = jobService.findById(id);
+        List<Comment> commentList = commentService.findAllByJob(job);
         model.addAttribute("job", job);
+        model.addAttribute("comments", commentList);
+        model.addAttribute("comment", new Comment());
+        return "student/job/view-job.html";
+    }
+
+    @PostMapping(value = "/comments/newCommentForProject")
+    public String newCommentForProject(Model model, Comment comment, @RequestParam Long projectId) {
+        commentService.createForProject(projectId, comment);
+        return "redirect:/student/projects/viewMyProject";
+    }
+
+    @PostMapping(value = "/comments/newCommentForJob")
+    public String newCommentForJob(Model model, Comment comment, @RequestParam Long jobId) {
+        commentService.createForJob(jobId, comment);
+        Job job = jobService.findById(jobId);
+        List<Comment> commentList = commentService.findAllByJob(job);
+        model.addAttribute("job", job);
+        model.addAttribute("comments", commentList);
+        model.addAttribute("comment", new Comment());
         return "student/job/view-job.html";
     }
 }

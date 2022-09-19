@@ -31,7 +31,4 @@ public interface JobService {
 
     void assignJob(Long projectId, String MSSV);
 
-//    List<Job> findAllByUser(Long userId);
-//
-//    List<Job> getByProjectNameAndUser(String projectName, Long userId);
 }

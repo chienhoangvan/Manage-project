@@ -113,5 +113,47 @@
         </form>
     </div>
 </div>
+
+<div class="container">
+    <div class="style-scroll">
+        <div th:each="comment : ${comments}">
+            <div class="row">
+                <label class="col-25" th:text="${comment.createdBy}">: </label>
+                <label class="col-50" th:text="${comment.createdDate}"></label>
+            </div>
+            <div>
+                <label class="col-50" th:text="${comment.substance}"></label>
+            </div>
+            <br>
+        </div>
+    </div>
+
+    <form th:action="@{/teacher/comments/newCommentForJob}"
+          th:object="${comment}"
+          th:method="POST">
+        <div class="row">
+            <div class="col-25">
+                <label for="substance">Substance</label>
+            </div>
+            <div class="col-75">
+                <input
+                        type="text"
+                        id="substance"
+                        name="substance"
+                        th:field="${comment.substance}"
+                        required="required"
+                />
+            </div>
+            <input
+                    type="hidden"
+                    name="jobId"
+                    th:value="${job.id}"
+            />
+            <div class="col-50">
+                <input type="submit" value="Submit"/>
+            </div>
+        </div>
+    </form>
+</div>
 </body>
 </html>

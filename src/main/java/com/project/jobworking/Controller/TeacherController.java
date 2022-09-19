@@ -1,11 +1,13 @@
 package com.project.jobworking.Controller;
 
+import com.project.jobworking.Entity.Comment;
 import com.project.jobworking.Entity.Job;
 import com.project.jobworking.Entity.Project;
 import com.project.jobworking.Entity.User;
 import com.project.jobworking.Repository.ProjectRepository;
 import com.project.jobworking.Repository.UserRepository;
 import com.project.jobworking.Security.CurrentUserFinder;
+import com.project.jobworking.Service.CommentService;
 import com.project.jobworking.Service.JobService;
 import com.project.jobworking.Service.ProjectService;
 import com.project.jobworking.Service.UserService;
@@ -43,6 +45,9 @@ public class TeacherController {
     @Autowired
     private ProjectRepository projectRepository;
 
+    @Autowired
+    private CommentService commentService;
+
     @GetMapping
     public String employeeHomePage(Model model) {
         Long currentUserId = currentUserFinder.getCurrentUserId();
@@ -61,7 +66,10 @@ public class TeacherController {
     @GetMapping(value = "/projects/{id}")
     public String viewProject(Model model, @PathVariable Long id) {
         Project project = projectService.findById(id);
+        List<Comment> commentList = commentService.findAllByProject(project);
         model.addAttribute("project", project);
+        model.addAttribute("comments", commentList);
+        model.addAttribute("comment", new Comment());
         return "teacher/project/view-project.html";
     }
 
@@ -199,7 +207,10 @@ public class TeacherController {
     @GetMapping(value = "/jobs/{id}")
     public String viewJob(Model model, @PathVariable Long id) {
         Job job = jobService.findById(id);
+        List<Comment> commentList = commentService.findAllByJob(job);
         model.addAttribute("job", job);
+        model.addAttribute("comments", commentList);
+        model.addAttribute("comment", new Comment());
         return "teacher/job/view-job.html";
     }
 
@@ -240,6 +251,30 @@ public class TeacherController {
     public String assignJob(@RequestParam Long jobId, @PathVariable String MSSV) {
         jobService.assignJob(jobId, MSSV);
         return "teacher/job/teacher-assigned.html";
+    }
+
+    /*-----------------Comment---------------*/
+
+    @PostMapping(value = "/comments/newCommentForProject")
+    public String newCommentForProject(Model model, Comment comment,@RequestParam Long projectId) {
+        commentService.createForProject(projectId, comment);
+        Project project = projectService.findById(projectId);
+        List<Comment> commentList = commentService.findAllByProject(project);
+        model.addAttribute("project", project);
+        model.addAttribute("comments", commentList);
+        model.addAttribute("comment", new Comment());
+        return "teacher/project/view-project.html";
+    }
+
+    @PostMapping(value = "/comments/newCommentForJob")
+    public String newCommentForJob(Model model, Comment comment,@RequestParam Long jobId) {
+        commentService.createForJob(jobId, comment);
+        Job job = jobService.findById(jobId);
+        List<Comment> commentList = commentService.findAllByJob(job);
+        model.addAttribute("job", job);
+        model.addAttribute("comments", commentList);
+        model.addAttribute("comment", new Comment());
+        return "teacher/job/view-job.html";
     }
 
 }
