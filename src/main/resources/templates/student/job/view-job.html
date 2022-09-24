@@ -9,111 +9,163 @@
 </head>
 
 <body>
+<script src="../../../static/JS/main.js"></script>
 <div th:replace="navBar-layout :: studentNavBar"></div>
 
-
 <div class="container">
-    <h3>Job information:</h3>
-
     <div class="row">
-        <div class="col-50">
-            <label for="id">Job ID</label>
-        </div>
-        <div class="col-75" th:text="${job.id}"></div>
+        <div class="col-250">
 
-        <div class="col-50">
-            <label for="name">Job Name</label>
-        </div>
-        <div class="col-75">
-            <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    th:field="${job.name}"
-                    required="required"
-            />
-        </div>
-    </div>
+            <form th:action="@{/student/jobs/showOwnJobs}">
+                <div class="row">
+                    <div class="col-25">
+                        <input class="backButton" type="submit" value="">
+                    </div>
 
+                    <div class="col-75">
+                        <p><b>Job Information</b></p>
+                    </div>
+                </div>
+            </form>
 
-    <div class="row">
-        <div class="col-50">
-            <label for="description">Description</label>
-        </div>
-        <div class="col-75">
-            <input
-                    type="text"
-                    id="description"
-                    name="description"
-                    th:field="${job.description}"
-                    required="required"
-            />
-        </div>
-
-        <div class="col-50">
-            <label for="status">Status</label>
-        </div>
-        <div class="col-75">
-            <input
-                    type="text"
-                    id="status"
-                    name="status"
-                    th:field="${job.status}"
-                    required="required"
-            />
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-50">
-            <label for="startDate">Start Date</label>
-        </div>
-        <div class="col-75">
-            <input
-                    type="text"
-                    id="startDate"
-                    name="startDate"
-                    th:field="${job.startDate}"
-                    required="required"
-            />
-        </div>
-
-        <div class="col-50">
-            <label for="endDate">End Date</label>
-        </div>
-        <div class="col-75">
-            <input
-                    type="text"
-                    id="endDate"
-                    name="endDate"
-                    th:field="${job.endDate}"
-                    required="required"
-            />
-        </div>
-    </div>
-
-    <div>
-        <form th:action="@{/student/jobs/showOwnJobs}">
             <div class="row">
-                <div class="col-50"></div>
-                <div class="col-50"></div>
+                <div class="col-50">
+                    <label for="id">Job ID</label>
+                </div>
+                <label style="width: 200px" class="col-75" th:text="${job.id}"></label>
+
+            </div>
+
+            <div class="row">
+
+                <div class="col-50">
+                    <label for="name">Job Name</label>
+                </div>
                 <div class="col-75">
-                    <input class="registerButton" type="submit" value="Back">
+                    <input
+                            type="text"
+                            id="name"
+                            name="name"
+                            th:field="${job.name}"
+                            required="required"
+                    />
+                </div>
+
+                <div class="col-50">
+                    <label for="status">Status</label>
+                </div>
+                <div class="col-75">
+                    <input
+                            type="text"
+                            id="status"
+                            name="status"
+                            th:field="${job.status}"
+                            required="required"
+                    />
                 </div>
             </div>
-        </form>
+
+            <div class="row">
+                <div class="col-50">
+                    <label for="startDate">Start Date</label>
+                </div>
+                <div class="col-75">
+                    <input
+                            type="text"
+                            id="startDate"
+                            name="startDate"
+                            th:field="${job.startDate}"
+                            required="required"
+                    />
+                </div>
+
+                <div class="col-50">
+                    <label for="endDate">End Date</label>
+                </div>
+                <div class="col-75">
+                    <input
+                            type="text"
+                            id="endDate"
+                            name="endDate"
+                            th:field="${job.endDate}"
+                            required="required"
+                    />
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-50">
+                    <label for="description">Description</label>
+                </div>
+                <div class="col-150">
+                    <textarea style="width: 600px;" id="" cols="60" rows="8" th:field="${job.description}">
+                    </textarea>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-25">
+        </div>
+
+        <div class="col-75">
+            <form th:action="@{/student/reports/save}"
+                  th:object="${report}"
+                  method="POST" id="report"
+            >
+                <label for="reportName">Title</label>
+                <input
+                        type="text"
+                        id="reportName"
+                        name="reportName"
+                        th:field="${report.reportName}"
+                        required="required"
+                />
+
+                <label for="substance">Substance</label>
+                <textarea style="width: 200px;" cols="30" rows="5" th:field="${report.substance}">
+                </textarea>
+                <input
+                        type="hidden"
+                        name="jobId"
+                        th:value="${job.id}"
+                />
+            </form>
+
+            <form th:action="@{/student/upload-single-file}"
+                  method="post" id="upload"
+                  enctype="multipart/form-data">
+                <input type="file" name="file" class="file-input" required/>
+                <button type="submit" form="upload">Upload</button>
+                <input
+                        type="hidden"
+                        name="jobId"
+                        th:value="${job.id}"
+                />
+            </form>
+            <div th:each="media : ${mediaList}">
+                <div>
+                    <a href="${media.fileDownloadUri}">
+                        <label for="" th:text="${media.fileName}"></label>
+                    </a>
+                </div>
+            </div>
+
+            <input type="submit" value="Submit" form="report"/>
+        </div>
     </div>
 </div>
-</div>
+
 <div class="container">
     <div class="style-scroll">
         <div th:each="comment : ${comments}">
-            <div class="row">
-                <label class="col-25" th:text="${comment.createdBy}">: </label>
-                <label class="col-50" th:text="${comment.createdDate}"></label>
-            </div>
             <div>
-                <label class="col-50" th:text="${comment.substance}"></label>
+                <div class="row">
+                    <label class="col-25" th:text="${comment.createdBy}">: </label>
+                    <label class="col-50" th:text="${comment.createdDate}"></label>
+                </div>
+                <div>
+                    <label class="col-50" th:text="${comment.substance}"></label>
+                </div>
             </div>
             <br>
         </div>

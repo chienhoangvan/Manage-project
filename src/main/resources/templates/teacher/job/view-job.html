@@ -13,104 +13,133 @@
 
 
 <div class="container">
-    <h3>Update Job information:</h3>
+    <div class="row">
+        <div class="col-250">
+            <form th:action="@{/teacher/jobs/showOwnJobs}">
+                <div class="row">
+                    <div class="col-25">
+                        <input class="backButton" type="submit" value="">
+                    </div>
+                    <div class="col-75">
+                        <h3>Update Job information:</h3>
+                    </div>
+                </div>
+            </form>
+            <form th:action="@{/teacher/jobs/update/{id}(id=${job.id})}" th:method="POST">
+                <div class="row">
+                    <div class="col-50">
+                        <label for="id">Job ID</label>
+                    </div>
+                    <div class="col-75" th:text="${job.id}"></div>
+                </div>
 
-    <form th:action="@{/teacher/jobs/update/{id}(id=${job.id})}" th:method="POST">
-        <div class="row">
-            <div class="col-50">
-                <label for="id">Job ID</label>
-            </div>
-            <div class="col-75" th:text="${job.id}"></div>
+                <div class="row">
+                    <div class="col-50">
+                        <label for="name">Job Name</label>
+                    </div>
+                    <div class="col-75">
+                        <input
+                                type="text"
+                                id="name"
+                                name="name"
+                                th:field="${job.name}"
+                                required="required"
+                        />
+                    </div>
 
-            <div class="col-50">
-                <label for="name">Job Name</label>
-            </div>
-            <div class="col-75">
-                <input
-                        type="text"
-                        id="name"
-                        name="name"
-                        th:field="${job.name}"
-                        required="required"
-                />
-            </div>
+                    <div class="col-50">
+                        <label for="status">Status</label>
+                    </div>
+                    <div class="col-75">
+                        <input
+                                type="text"
+                                id="status"
+                                name="status"
+                                th:field="${job.status}"
+                                required="required"
+                        />
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-50">
+                        <label for="startDate">Start Date</label>
+                    </div>
+                    <div class="col-75">
+                        <input
+                                type="text"
+                                id="startDate"
+                                name="startDate"
+                                th:field="${job.startDate}"
+                                required="required"
+                        />
+                    </div>
+
+                    <div class="col-50">
+                        <label for="endDate">End Date</label>
+                    </div>
+                    <div class="col-75">
+                        <input
+                                type="text"
+                                id="endDate"
+                                name="endDate"
+                                th:field="${job.endDate}"
+                                required="required"
+                        />
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-50">
+                        <label for="description">Description</label>
+                    </div>
+                    <div class="col-150">
+                    <textarea style="width: 600px;" id="" cols="60" rows="8" th:field="${job.description}">
+                    </textarea>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-50"></div>
+                    <div class="col-50"></div>
+                    <div class="col-75">
+                        <input type="submit" value="Submit"/>
+                    </div>
+                </div>
+            </form>
         </div>
+        <div class="col-25">
 
-
-        <div class="row">
-            <div class="col-50">
-                <label for="description">Description</label>
-            </div>
-            <div class="col-75">
-                <input
-                        type="text"
-                        id="description"
-                        name="description"
-                        th:field="${job.description}"
-                        required="required"
-                />
-            </div>
-
-            <div class="col-50">
-                <label for="status">Status</label>
-            </div>
-            <div class="col-75">
-                <input
-                        type="text"
-                        id="status"
-                        name="status"
-                        th:field="${job.status}"
-                        required="required"
-                />
-            </div>
         </div>
+        <div class="col-75">
+            <div style="padding: 5px 0px" for="">Report Submitted</div>
+            <div th:text="${report.createdBy}"></div>
 
-        <div class="row">
-            <div class="col-50">
-                <label for="startDate">Start Date</label>
-            </div>
+            <div style="padding: 5px 0px" for="reportName">Tittle</div>
+            <input
+                    type="text"
+                    id="reportName"
+                    name="reportName"
+                    th:field="${report.reportName}"
+                    required="required"
+                    disabled
+            />
+
+            <div style="padding: 5px 0px" for="substance">Description</div>
             <div class="col-75">
-                <input
-                        type="text"
-                        id="startDate"
-                        name="startDate"
-                        th:field="${job.startDate}"
-                        required="required"
-                />
+                <textarea style="width: 200px;" cols="60" rows="5" th:field="${report.substance}" disabled>
+                </textarea>
             </div>
 
-            <div class="col-50">
-                <label for="endDate">End Date</label>
-            </div>
-            <div class="col-75">
-                <input
-                        type="text"
-                        id="endDate"
-                        name="endDate"
-                        th:field="${job.endDate}"
-                        required="required"
-                />
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-50"></div>
-            <div class="col-50"></div>
-            <div class="col-75">
-                <input type="submit" value="Submit"/>
-            </div>
-        </div>
-    </form>
-    <div>
-        <form th:action="@{/teacher/jobs/showOwnJobs}">
-            <div class="row">
-                <div class="col-50"></div>
-                <div class="col-50"></div>
-                <div class="col-75">
-                    <input class="registerButton" type="submit" value="Back">
+            <div th:each="media : ${mediaListStudent}">
+                <div>
+                    <a href="${media.fileDownloadUri}">
+                        <label for="" th:text="${media.fileName}"></label>
+                    </a>
                 </div>
             </div>
-        </form>
+
+        </div>
     </div>
 </div>
 

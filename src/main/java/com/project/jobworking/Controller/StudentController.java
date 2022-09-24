@@ -1,22 +1,27 @@
 package com.project.jobworking.Controller;
 
-import com.project.jobworking.Entity.Comment;
-import com.project.jobworking.Entity.Job;
-import com.project.jobworking.Entity.Project;
-import com.project.jobworking.Entity.User;
+import com.project.jobworking.Entity.*;
 import com.project.jobworking.Repository.JobRepository;
+import com.project.jobworking.Repository.MediaRepository;
 import com.project.jobworking.Security.CurrentUserFinder;
-import com.project.jobworking.Service.CommentService;
-import com.project.jobworking.Service.JobService;
-import com.project.jobworking.Service.ProjectService;
-import com.project.jobworking.Service.UserService;
+import com.project.jobworking.Service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping(value = "/student")
@@ -37,7 +42,16 @@ public class StudentController {
     private JobRepository jobRepository;
 
     @Autowired
+    private MediaRepository mediaRepository;
+
+    @Autowired
     private CommentService commentService;
+
+    @Autowired
+    private FileStorageService fileStorageService;
+
+    @Autowired
+    private ReportService reportService;
 
     @GetMapping
     public String employeeHomePage(Model model) {
@@ -51,10 +65,10 @@ public class StudentController {
     @GetMapping(value = "/projects/viewMyProject")
     public String viewMyProject(Model model) {
         Long currentUserId = currentUserFinder.getCurrentUserId();
-        User currentUser = userService.findById(currentUserId);
+        User user = userService.findById(currentUserId);
         Project project = new Project();
-        if (Objects.nonNull(currentUser.getProject().getId())){
-            project = projectService.findById(currentUser.getProject().getId());
+        if (Objects.nonNull(user.getProject().getId())){
+            project = projectService.findById(user.getProject().getId());
 
         } else project = null;
         List<Comment> commentList = commentService.findAllByProject(project);
@@ -82,10 +96,15 @@ public class StudentController {
 
     @GetMapping(value = "/jobs/{id}")
     public String viewJob(Model model, @PathVariable Long id) {
+        Long currentUserId = currentUserFinder.getCurrentUserId();
+        User user = userService.findById(currentUserId);
         Job job = jobService.findById(id);
         List<Comment> commentList = commentService.findAllByJob(job);
+        List<Media> mediaList = mediaRepository.findByCreatedByAndJobId(user.getUsername(), id);
         model.addAttribute("job", job);
+        model.addAttribute("report", new Report());
         model.addAttribute("comments", commentList);
+        model.addAttribute("mediaList", mediaList);
         model.addAttribute("comment", new Comment());
         return "student/job/view-job.html";
     }
@@ -99,11 +118,74 @@ public class StudentController {
     @PostMapping(value = "/comments/newCommentForJob")
     public String newCommentForJob(Model model, Comment comment, @RequestParam Long jobId) {
         commentService.createForJob(jobId, comment);
-        Job job = jobService.findById(jobId);
-        List<Comment> commentList = commentService.findAllByJob(job);
-        model.addAttribute("job", job);
-        model.addAttribute("comments", commentList);
-        model.addAttribute("comment", new Comment());
-        return "student/job/view-job.html";
+        return "redirect:/student/jobs/" + jobId;
+    }
+
+    /*------------Report-------------*/
+
+    @PostMapping(value = "/reports/save")
+    public String saveReport(Report report, @RequestParam Long jobId) {
+        report.setJob(jobRepository.findById(jobId).orElse(null));
+        reportService.save(report);
+        Long currentUserId = currentUserFinder.getCurrentUserId();
+        User user = userService.findById(currentUserId);
+        List<Media> mediaList = mediaRepository.findByCreatedByAndJobId(user.getUsername(), jobId);
+        for (Media media : mediaList) {
+            media.setReportId(report.getId());
+            mediaRepository.save(media);
+        }
+        return "redirect:/student/jobs/" + jobId;
+    }
+
+
+    /*------------Up load file ----------*/
+    @PostMapping("/upload-single-file")
+    public String uploadSingleFile(@RequestParam("file") MultipartFile file,
+                                  @RequestParam("jobId") Long jobId, Model model) {
+        String fileName = fileStorageService.storeFile(file);
+        String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path("/download-file/")
+                .path(fileName)
+                .toUriString();
+
+        Media fileUpload = new Media(fileName, fileDownloadUri, file.getContentType(), file.getSize());
+        if (Objects.nonNull(jobId)) {
+            fileUpload.setJobId(jobId);
+        }
+        mediaRepository.save(fileUpload);
+
+        return "redirect:/student/jobs/" + jobId;
+    }
+
+//    @PostMapping("/upload-multiple-files")
+//    public List<Media> uploadMultipleFiles(@RequestParam("files") MultipartFile[] files,
+//                                           @RequestParam("jobId") Long jobId,
+//                                           @RequestParam("projectId") Long projectId) {
+//        return Arrays.stream(files).map(x -> this.uploadSingleFile(x, jobId, projectId))
+//                .collect(Collectors.toList());
+//    }
+
+    @GetMapping("/download-file/{fileName:.+}")
+    public ResponseEntity<Resource> downloadFile(@PathVariable String fileName, HttpServletRequest request) {
+        // Load file as Resource
+        Resource resource = fileStorageService.loadFileAsResource(fileName);
+
+        // Try to determine file's content type
+        String contentType = null;
+        try {
+            contentType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
+        } catch (IOException ex) {
+            System.out.print("Could not determine file type.");
+        }
+
+        // Fallback to the default content type if type could not be determined
+        if(contentType == null) {
+            contentType = "application/octet-stream";
+        }
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(contentType))
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
+                .body(resource);
     }
 }

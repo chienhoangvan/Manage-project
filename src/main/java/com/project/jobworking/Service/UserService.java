@@ -22,4 +22,6 @@ public interface UserService {
     void deleteById(Long userId);
 
     List<User> shownStudents(String name, String MSSV);
+
+    User currentUser();
 }

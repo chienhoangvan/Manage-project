@@ -7,18 +7,33 @@ import javax.persistence.*;
 @Data
 @Entity
 public class Media extends BaseEntity {
-    @Column(name = "url")
-    private String url;
 
-    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.MERGE}, fetch = FetchType.LAZY)
-    private Project project;
+    @Column(name = "name", unique = true)
+    private String fileName;
 
-    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.MERGE}, fetch = FetchType.LAZY)
-    private Job job;
+    @Column(name = "url_download", unique = true)
+    private String fileDownloadUri;
 
-    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.MERGE}, fetch = FetchType.LAZY)
-    private Report report;
+    @Column(name = "file_type")
+    private String fileType;
 
-    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.MERGE}, fetch = FetchType.LAZY)
-    private Comment comment;
+    private long size;
+
+    private Long projectId;
+
+    private Long jobId;
+
+    private Long reportId;
+
+    private Long commentId;
+
+    public Media(String fileName, String fileDownloadUri, String fileType, long size) {
+        this.fileName = fileName;
+        this.fileDownloadUri = fileDownloadUri;
+        this.fileType = fileType;
+        this.size = size;
+    }
+
+    public Media() {
+    }
 }

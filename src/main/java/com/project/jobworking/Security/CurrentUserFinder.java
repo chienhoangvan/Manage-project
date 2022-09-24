@@ -10,19 +10,19 @@ import org.springframework.stereotype.Service;
 @Service
 public class CurrentUserFinder {
     @Autowired
-    UserService usService;
+    UserService userService;
 
     public Long getCurrentUserId() {
         UserDetails details = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String username=details.getUsername();
 
-        User user= usService.getByUsername(username);
+        User user= userService.getByUsername(username);
         return user.getUser_id();
 
     }
 
     public User getCurrentUser() {
-        User currentUser= usService.findById(getCurrentUserId());
+        User currentUser= userService.findById(getCurrentUserId());
         return currentUser;
     }
 }

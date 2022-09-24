@@ -2,6 +2,7 @@ package com.project.jobworking.Service.Impl;
 
 import com.project.jobworking.Entity.User;
 import com.project.jobworking.Repository.UserRepository;
+import com.project.jobworking.Security.CurrentUserFinder;
 import com.project.jobworking.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -71,4 +72,11 @@ public class UserServiceImpl implements UserService {
         return users;
     }
 
+    @Override
+    public User currentUser() {
+        CurrentUserFinder currentUserFinder = new CurrentUserFinder();
+        Long currentUserId = currentUserFinder.getCurrentUserId();
+        User user = this.findById(currentUserId);
+        return user;
+    }
 }

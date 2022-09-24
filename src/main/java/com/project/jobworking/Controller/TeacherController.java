@@ -1,10 +1,9 @@
 package com.project.jobworking.Controller;
 
-import com.project.jobworking.Entity.Comment;
-import com.project.jobworking.Entity.Job;
-import com.project.jobworking.Entity.Project;
-import com.project.jobworking.Entity.User;
+import com.project.jobworking.Entity.*;
+import com.project.jobworking.Repository.MediaRepository;
 import com.project.jobworking.Repository.ProjectRepository;
+import com.project.jobworking.Repository.ReportRepository;
 import com.project.jobworking.Repository.UserRepository;
 import com.project.jobworking.Security.CurrentUserFinder;
 import com.project.jobworking.Service.CommentService;
@@ -18,10 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 @RequestMapping(value = "/teacher")
@@ -44,6 +40,12 @@ public class TeacherController {
 
     @Autowired
     private ProjectRepository projectRepository;
+
+    @Autowired
+    private ReportRepository reportRepository;
+
+    @Autowired
+    private MediaRepository mediaRepository;
 
     @Autowired
     private CommentService commentService;
@@ -208,6 +210,14 @@ public class TeacherController {
     public String viewJob(Model model, @PathVariable Long id) {
         Job job = jobService.findById(id);
         List<Comment> commentList = commentService.findAllByJob(job);
+        Report report = reportRepository.findTopByJobIdOrderByCreatedDateDesc(id);
+        List<Media> mediaList = mediaRepository.findByCreatedByAndJobId(report.getCreatedBy(),id);
+        if (Objects.nonNull(report)) {
+            model.addAttribute("report", report);
+        }
+        if (Objects.nonNull(mediaList)) {
+            model.addAttribute("mediaListStudent", mediaList);
+        }
         model.addAttribute("job", job);
         model.addAttribute("comments", commentList);
         model.addAttribute("comment", new Comment());
