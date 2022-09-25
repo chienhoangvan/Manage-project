@@ -10,4 +10,6 @@ public interface MediaRepository extends JpaRepository<Media, Long> {
     List<Media> findByCreatedByAndJobId(String createdBy, Long jobId);
 
     List<Media> findAllByJobId(Long jobId);
+
+    void deleteById(Long mediaId);
 }

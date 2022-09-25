@@ -112,33 +112,36 @@
 
         </div>
         <div class="col-75">
-            <div style="padding: 5px 0px" for="">Report Submitted</div>
-            <div th:text="${report.createdBy}"></div>
+            <div th:if="${report}">
+                <div style="padding: 5px 0px" for="">Report Submitted</div>
+                <div th:text="${report.createdBy}"></div>
 
-            <div style="padding: 5px 0px" for="reportName">Tittle</div>
-            <input
-                    type="text"
-                    id="reportName"
-                    name="reportName"
-                    th:field="${report.reportName}"
-                    required="required"
-                    disabled
-            />
+                <div style="padding: 5px 0px" for="reportName">Tittle</div>
+                <input
+                        type="text"
+                        id="reportName"
+                        name="reportName"
+                        th:field="${report.reportName}"
+                        required="required"
+                        disabled
+                />
 
-            <div style="padding: 5px 0px" for="substance">Description</div>
-            <div class="col-75">
+                <div style="padding: 5px 0px" for="substance">Description</div>
+                <div class="col-75">
                 <textarea style="width: 200px;" cols="60" rows="5" th:field="${report.substance}" disabled>
                 </textarea>
-            </div>
+                </div>
 
-            <div th:each="media : ${mediaListStudent}">
-                <div>
-                    <a href="${media.fileDownloadUri}">
-                        <label for="" th:text="${media.fileName}"></label>
-                    </a>
+                <div th:each="media : ${mediaListStudent}">
+                    <div>
+                        <form th:action="@{/teacher/download-file/{fileName}(fileName=${media.fileName})}"
+                              th:method="GET" id="download">
+                            <input class="downloadButton" type="submit" value="">
+                            <a type="submit" th:text="${media.fileName}" ></a>
+                        </form>
+                    </div>
                 </div>
             </div>
-
         </div>
     </div>
 </div>

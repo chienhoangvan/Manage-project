@@ -1,23 +1,26 @@
 package com.project.jobworking.Controller;
 
 import com.project.jobworking.Entity.*;
-import com.project.jobworking.Repository.MediaRepository;
-import com.project.jobworking.Repository.ProjectRepository;
-import com.project.jobworking.Repository.ReportRepository;
-import com.project.jobworking.Repository.UserRepository;
+import com.project.jobworking.Repository.*;
 import com.project.jobworking.Security.CurrentUserFinder;
-import com.project.jobworking.Service.CommentService;
-import com.project.jobworking.Service.JobService;
-import com.project.jobworking.Service.ProjectService;
-import com.project.jobworking.Service.UserService;
+import com.project.jobworking.Service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping(value = "/teacher")
@@ -50,6 +53,15 @@ public class TeacherController {
     @Autowired
     private CommentService commentService;
 
+    @Autowired
+    private FileStorageService fileStorageService;
+
+    @Autowired
+    private ResultRepository resultRepository;
+
+    @Autowired
+    private ResultService resultService;
+
     @GetMapping
     public String employeeHomePage(Model model) {
         Long currentUserId = currentUserFinder.getCurrentUserId();
@@ -69,8 +81,28 @@ public class TeacherController {
     public String viewProject(Model model, @PathVariable Long id) {
         Project project = projectService.findById(id);
         List<Comment> commentList = commentService.findAllByProject(project);
+        List<User> userList = userRepository.findByProjectId(id);
+        List<Result> resultList = new ArrayList<>();
+        if (!userList.isEmpty()) {
+            for (User user : userList) {
+                if (Objects.isNull(resultRepository.findByUser(user).orElse(null))) {
+                    Result result = new Result();
+                    result.setUser(user);
+//                    result.setResultName("default");
+//                    result.setProgress("0%");
+//                    result.setResult(" ");
+                    result.setProjectId(id);
+                    resultRepository.save(result);
+                    resultList.add(result);
+                } else {
+                    resultList.add(resultRepository.
+                            findByUser(user).orElse(null));
+                }
+            }
+        }
         model.addAttribute("project", project);
         model.addAttribute("comments", commentList);
+        model.addAttribute("resultList", resultList);
         model.addAttribute("comment", new Comment());
         return "teacher/project/view-project.html";
     }
@@ -211,12 +243,12 @@ public class TeacherController {
         Job job = jobService.findById(id);
         List<Comment> commentList = commentService.findAllByJob(job);
         Report report = reportRepository.findTopByJobIdOrderByCreatedDateDesc(id);
-        List<Media> mediaList = mediaRepository.findByCreatedByAndJobId(report.getCreatedBy(),id);
         if (Objects.nonNull(report)) {
             model.addAttribute("report", report);
-        }
-        if (Objects.nonNull(mediaList)) {
-            model.addAttribute("mediaListStudent", mediaList);
+            List<Media> mediaList = mediaRepository.findByCreatedByAndJobId(report.getCreatedBy(),id);
+            if (Objects.nonNull(mediaList)) {
+                model.addAttribute("mediaListStudent", mediaList);
+            }
         }
         model.addAttribute("job", job);
         model.addAttribute("comments", commentList);
@@ -287,4 +319,65 @@ public class TeacherController {
         return "teacher/job/view-job.html";
     }
 
+    /*--------------------File-------------------*/
+    @PostMapping("/upload-single-file")
+    public String uploadSingleFile(@RequestParam("file") MultipartFile file,
+                                   @RequestParam("jobId") Long jobId, Model model) {
+        String fileName = fileStorageService.storeFile(file);
+        String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path("/download-file/")
+                .path(fileName)
+                .toUriString();
+
+        Media fileUpload = new Media(fileName, fileDownloadUri, file.getContentType(), file.getSize());
+        if (Objects.nonNull(jobId)) {
+            fileUpload.setJobId(jobId);
+        }
+        mediaRepository.save(fileUpload);
+
+        return "redirect:/teacher/jobs/" + jobId;
+    }
+
+//    @PostMapping("/upload-multiple-files")
+//    public List<Media> uploadMultipleFiles(@RequestParam("files") MultipartFile[] files,
+//                                           @RequestParam("jobId") Long jobId,
+//                                           @RequestParam("projectId") Long projectId) {
+//        return Arrays.stream(files).map(x -> this.uploadSingleFile(x, jobId, projectId))
+//                .collect(Collectors.toList());
+//    }
+
+    @GetMapping("/download-file/{fileName:.+}")
+    public ResponseEntity<Resource> downloadFile(@PathVariable String fileName, HttpServletRequest request) {
+        // Load file as Resource
+        Resource resource = fileStorageService.loadFileAsResource(fileName);
+
+        // Try to determine file's content type
+        String contentType = null;
+        try {
+            contentType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
+        } catch (IOException ex) {
+            System.out.print("Could not determine file type.");
+        }
+
+        // Fallback to the default content type if type could not be determined
+        if(contentType == null) {
+            contentType = "application/octet-stream";
+        }
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(contentType))
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
+                .body(resource);
+    }
+
+
+    /*--------------Result--------------*/
+
+    @PostMapping(value = "/results/update/{id}")
+    public String updateProject(@PathVariable Long id, @RequestParam String resultName,
+                                @RequestParam String progress, @RequestParam String result,
+                                @RequestParam Long projectId) {
+        resultService.updateResult(id,resultName,progress,result);
+        return "redirect:/teacher/projects/" + projectId;
+    }
 }

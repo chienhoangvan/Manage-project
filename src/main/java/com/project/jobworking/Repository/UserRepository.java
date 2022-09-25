@@ -15,4 +15,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByMSSVAndRole(String MSSV, String role);
 
     List<User> findAllByRole(String role);
+
+    List<User> findByProjectId(Long projectId);
 }

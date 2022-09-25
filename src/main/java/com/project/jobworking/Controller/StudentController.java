@@ -3,6 +3,7 @@ package com.project.jobworking.Controller;
 import com.project.jobworking.Entity.*;
 import com.project.jobworking.Repository.JobRepository;
 import com.project.jobworking.Repository.MediaRepository;
+import com.project.jobworking.Repository.ResultRepository;
 import com.project.jobworking.Security.CurrentUserFinder;
 import com.project.jobworking.Service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,6 +54,12 @@ public class StudentController {
     @Autowired
     private ReportService reportService;
 
+    @Autowired
+    private ResultService resultService;
+
+    @Autowired
+    private ResultRepository resultRepository;
+
     @GetMapping
     public String employeeHomePage(Model model) {
         Long currentUserId = currentUserFinder.getCurrentUserId();
@@ -71,7 +78,11 @@ public class StudentController {
             project = projectService.findById(user.getProject().getId());
 
         } else project = null;
+        Result result = resultRepository.findByUser(user).orElse(null);
         List<Comment> commentList = commentService.findAllByProject(project);
+        if (Objects.nonNull(result)) {
+            model.addAttribute("result", result);
+        }
         model.addAttribute("project", project);
         model.addAttribute("comments", commentList);
         model.addAttribute("comment", new Comment());
@@ -125,8 +136,14 @@ public class StudentController {
 
     @PostMapping(value = "/reports/save")
     public String saveReport(Report report, @RequestParam Long jobId) {
-        report.setJob(jobRepository.findById(jobId).orElse(null));
+        Job job = jobRepository.findById(jobId).orElse(null);
+        report.setJob(job);
         reportService.save(report);
+        if (Objects.nonNull(job)) {
+            if (job.getEndDate().before(report.getCreatedDate())) {
+                job.setStatus("Late Submit");
+            } else job.setStatus("Done");
+        }
         Long currentUserId = currentUserFinder.getCurrentUserId();
         User user = userService.findById(currentUserId);
         List<Media> mediaList = mediaRepository.findByCreatedByAndJobId(user.getUsername(), jobId);
@@ -187,5 +204,12 @@ public class StudentController {
                 .contentType(MediaType.parseMediaType(contentType))
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
                 .body(resource);
+    }
+
+    @PostMapping(value = "/reports/deleteMedia")
+    public String deleteMedia(@RequestParam("mediaId") Long mediaId,
+                              @RequestParam("jobId") Long jobId) {
+        mediaRepository.deleteById(mediaId);
+        return "redirect:/student/jobs/" + jobId;
     }
 }
