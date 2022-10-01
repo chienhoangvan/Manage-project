@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="ISO-8859-1"/>
+  <title>Projects</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" th:href="@{/CSS/account-layout.css}">
+</head>
+
+<body>
+<div th:replace="navBar-layout :: teacherNavBar"></div>
+
+<div class="container">
+
+  <div class="row">
+    <form th:action="@{/teacher/results/view}" method="GET">
+      <div class="col-25">
+        <label for="name">Project Name</label>
+      </div>
+      <div class="col-75">
+        <input type="text" id="name" name="name"/>
+      </div>
+
+      <div class="col-150">
+
+      </div>
+
+      <div>
+        <input type="submit" value="Search"/>
+      </div>
+    </form>
+
+    <div>
+      <a href="?">
+        <button type="button" class="submit-button">All Projects</button>
+      </a>
+    </div>
+
+  </div>
+
+  <div class="style-scroll">
+    <table th:if="${studentList}" id="tablestyle">
+      <tr>
+        <th>ID</th>
+        <th>Username</th>
+        <th>Student Name</th>
+        <th>MSSV</th>
+        <th>Project Name</th>
+        <th>Action</th>
+      </tr>
+      <tr th:each="user : ${studentList}">
+        <td th:text="${user.user_id}"></td>
+        <td th:text="${user.username}"></td>
+        <td th:text="${user.name}"></td>
+        <td th:text="${user.MSSV}"></td>
+        <td th:text="${user.project.name}"></td>
+        <td style="width: 200px">
+          <a th:href="@{/teacher/results/showStudent/{userId}(userId=${user.user_id})}">
+            <button type="button" class="submit-button" style="width: 110px">View</button>
+          </a>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+</div>
+</body>
+</html>

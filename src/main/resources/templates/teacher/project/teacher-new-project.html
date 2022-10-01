@@ -11,7 +11,17 @@
 
 
 <div class="container">
-    <h3>Add new project to catalog</h3>
+
+    <form th:action="@{/teacher/projects/showProjects}">
+        <div class="row">
+            <div class="col-25">
+                <input class="backButton" type="submit" value="">
+            </div>
+            <div class="col-75">
+                <h3>Add new project to catalog:</h3>
+            </div>
+        </div>
+    </form>
 
     <form
             th:action="@{/teacher/projects/save}"
@@ -35,22 +45,7 @@
                                 required="required"
                         />
                     </div>
-
-                    <div class="col-50">
-                        <label for="description">Description</label>
-                    </div>
-                    <div class="col-75">
-                        <input
-                                type="text"
-                                id="description"
-                                name="description"
-                                th:field="${project.description}"
-                                required="required"
-                        />
-                    </div>
-
                 </div>
-
 
                 <div class="row">
                     <div class="col-50">
@@ -58,7 +53,7 @@
                     </div>
                     <div class="col-75">
                         <input
-                                type="text"
+                                type="date"
                                 id="startDate"
                                 name="startDate"
                                 th:field="${project.startDate}"
@@ -71,7 +66,7 @@
                     </div>
                     <div class="col-75">
                         <input
-                                type="text"
+                                type="date"
                                 id="endDate"
                                 name="endDate"
                                 th:field="${project.endDate}"
@@ -79,10 +74,22 @@
                         />
                     </div>
                 </div>
+
+                <div class="row">
+
+                    <div class="col-50">
+                        <label for="description">Description</label>
+                    </div>
+                    <div class="col-155">
+                        <textarea style="width: 600px;" cols="60" rows="5"
+                                  id="description"
+                                  name="description"
+                                  required = "required"
+                                  th:field="${project.description}">
+                        </textarea>
+                    </div>
+                </div>
             </div>
-<!--            <div class="col-75">-->
-<!--                <label for="Image">Image: </label>-->
-<!--            </div>-->
         </div>
 
 
@@ -92,16 +99,6 @@
             <div class="col-50"></div>
             <div class="col-75">
                 <input type="submit" value="Submit"/>
-            </div>
-        </div>
-    </form>
-    <form th:action="@{/teacher/projects/showProjects}">
-        <div class="row">
-            <div class="col-50"></div>
-            <div class="col-50"></div>
-            <div class="col-50"></div>
-            <div class="col-75">
-                <input class="registerButton" type="submit" value="Back">
             </div>
         </div>
     </form>

@@ -11,7 +11,7 @@ public class Result extends BaseEntity {
     private String progress;
 
     @Column
-    private String result;
+    private String point;
 
     @Column(name = "result_name")
     private String resultName;

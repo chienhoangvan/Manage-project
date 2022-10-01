@@ -112,61 +112,6 @@
         <div class="col-25">
 
         </div>
-        <div class="col-75">
-            <h3> Results</h3>
-            <br>
-            <div class="style-scroll-result">
-                <div th:if="${resultList.size() > 0}">
-                    <div th:each="result : ${resultList}">
-                        <form th:action="@{/teacher/results/update/{id}(id=${result.id})}"
-                              th:method="POST" >
-                            <div class="row">
-                                <div style="padding: 5px 5px" th:text="${result.user.name}"></div>
-                                <div>
-                                    <input class="updateResultButton" type="submit" value="">
-                                </div>
-                            </div>
-
-                            <div style="padding: 5px 5px" for="resultName">Tittle</div>
-                            <input
-                                    type="text"
-                                    id="resultName"
-                                    name="resultName"
-                                    th:value="${result.resultName}"
-                                    required="required"
-                            />
-
-                            <div style="padding: 5px 5px" for="progress">Description Progress</div>
-                            <div class="col-75">
-                        <textarea style="width: 200px;" cols="60" rows="5"
-                                  th:text="${result.progress}"
-                                  id="progress"
-                                  name="progress"
-                                  required="required">
-                        </textarea>
-                            </div>
-
-                            <div style="padding: 5px 5px" for="result">Result</div>
-                            <input
-                                    type="text"
-                                    id="result"
-                                    name="result"
-                                    th:value="${result.result}"
-                                    required="required"
-                            />
-
-                            <input
-                                    type="hidden"
-                                    name="projectId"
-                                    th:value="${project.id}"
-                            />
-
-                            <div>---------</div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 </div>
 <div class="container">

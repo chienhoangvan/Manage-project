@@ -20,11 +20,11 @@ public class ResultServiceImpl implements ResultService {
     }
 
     @Override
-    public void updateResult(Long id, String resultName, String progress, String result) {
+    public void updateResult(Long id, String resultName, String progress, String point) {
         Result resultObject = resultRepository.findById(id).get();
         resultObject.setResultName(resultName);
         resultObject.setProgress(progress);
-        resultObject.setResult(result);
+        resultObject.setPoint(point);
         this.save(resultObject);
     }
 }

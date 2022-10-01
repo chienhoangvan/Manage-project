@@ -62,6 +62,12 @@ public class TeacherController {
     @Autowired
     private ResultService resultService;
 
+    @Autowired
+    private JobRepository jobRepository;
+
+    @Autowired
+    private ReportService reportService;
+
     @GetMapping
     public String employeeHomePage(Model model) {
         Long currentUserId = currentUserFinder.getCurrentUserId();
@@ -82,27 +88,18 @@ public class TeacherController {
         Project project = projectService.findById(id);
         List<Comment> commentList = commentService.findAllByProject(project);
         List<User> userList = userRepository.findByProjectId(id);
-        List<Result> resultList = new ArrayList<>();
         if (!userList.isEmpty()) {
             for (User user : userList) {
                 if (Objects.isNull(resultRepository.findByUser(user).orElse(null))) {
                     Result result = new Result();
                     result.setUser(user);
-//                    result.setResultName("default");
-//                    result.setProgress("0%");
-//                    result.setResult(" ");
                     result.setProjectId(id);
                     resultRepository.save(result);
-                    resultList.add(result);
-                } else {
-                    resultList.add(resultRepository.
-                            findByUser(user).orElse(null));
                 }
             }
         }
         model.addAttribute("project", project);
         model.addAttribute("comments", commentList);
-        model.addAttribute("resultList", resultList);
         model.addAttribute("comment", new Comment());
         return "teacher/project/view-project.html";
     }
@@ -146,8 +143,8 @@ public class TeacherController {
 
     @PostMapping(value = "/projects/update/{id}")
     public String updateProject(@PathVariable Long id, @RequestParam String name,
-                                @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
-                                @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate,
+                                @RequestParam Date startDate,
+                                @RequestParam Date endDate,
                                 @RequestParam String description) {
         projectService.updateProject(id,name,startDate,endDate,description);
         return "teacher/project/teacher-project-information-changed.html";
@@ -258,7 +255,7 @@ public class TeacherController {
 
     @PostMapping(value = "/jobs/update/{id}")
     public String updateJob(@PathVariable Long id, @RequestParam String name,
-                            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
+                            @RequestParam Date startDate,
                             @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate,
                             @RequestParam String description, @RequestParam String status) {
         jobService.updateJob(id,name,startDate,endDate,description,status);
@@ -373,11 +370,43 @@ public class TeacherController {
 
     /*--------------Result--------------*/
 
+    @GetMapping(value = "/results/view")
+    public String viewStudentsResult(Model model, @RequestParam(required = false) String projectName) {
+        Long currentUserId = currentUserFinder.getCurrentUserId();
+        User currentUser = userService.findById(currentUserId);
+        List<Project> projectList = new ArrayList<>();
+        List<User> studentList = new ArrayList<>();
+        if ((projectName == null || projectName.isEmpty())) {
+            projectList = projectService.getByCreater(currentUser.getUsername());
+        } else {
+            projectList = projectService
+                    .getByProjectNameAndCreater(projectName, currentUser.getUsername());
+        }
+        projectList.forEach(x -> {
+            List<User> userList = userRepository.findByProjectId(x.getId());
+            studentList.addAll(userList);
+        });
+        model.addAttribute("studentList", studentList);
+        return "teacher/result/student-results.html";
+    }
+
+    @GetMapping(value = "/results/showStudent/{userId}")
+    public String showStudentResult(Model model, @PathVariable Long userId) {
+        User user = userRepository.findById(userId).orElse(null);
+        List<Report> reportList = reportRepository.findByCreatedByContainingIgnoreCase(user.getUsername());
+        List<Job> jobList = jobRepository.findAllByUser(user);
+        Result result = resultRepository.findByUser(user).orElse(null);
+        model.addAttribute("jobList", jobList);
+        model.addAttribute("reportList", reportList);
+        model.addAttribute("result", result);
+        return "teacher/result/show-result-student.html";
+    }
+
     @PostMapping(value = "/results/update/{id}")
     public String updateProject(@PathVariable Long id, @RequestParam String resultName,
-                                @RequestParam String progress, @RequestParam String result,
-                                @RequestParam Long projectId) {
-        resultService.updateResult(id,resultName,progress,result);
-        return "redirect:/teacher/projects/" + projectId;
+                                @RequestParam String progress, @RequestParam String point,
+                                @RequestParam Long userId) {
+        resultService.updateResult(id,resultName,progress,point);
+        return "redirect:/teacher/results/showStudent/" + userId;
     }
 }

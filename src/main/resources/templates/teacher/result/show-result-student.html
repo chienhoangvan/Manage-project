@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="ISO-8859-1"/>
+  <title>Jobs</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" th:href="@{/CSS/account-layout.css}">
+</head>
+
+<body>
+<div th:replace="navBar-layout :: teacherNavBar"></div>
+
+<div class="container">
+
+  <div class="style-scroll-result">
+    <table th:if="${jobList}" id="tablestyle">
+      <tr>
+        <th>ID</th>
+        <th>Job Name</th>
+        <th>Status</th>
+        <th>Start Date</th>
+        <th>End Date</th>
+        <th>Action</th>
+      </tr>
+      <tr th:each="job : ${jobList}">
+        <td th:text="${job.id}"></td>
+        <td th:text="${job.name}"></td>
+        <td th:text="${job.status}"></td>
+        <td th:text="${job.startDate}"></td>
+        <td th:text="${job.endDate}"></td>
+        <td style="width: 200px">
+          <a th:href="@{/teacher/jobs/{id}(id=${job.id})}">
+            <button type="button" class="submit-button" style="width: 110px">Go to</button>
+          </a>
+        </td>
+      </tr>
+    </table>
+  </div>
+  <div>
+      <form th:action="@{/teacher/results/update/{id}(id=${result.id})}"
+            th:method="POST">
+        <div class="row">
+          <div class="col-25">
+            <input class="updateResultButton" type="submit" value="">
+          </div>
+          <label class="col-50" style="padding: 10px 5px 5px" th:text="${result.user.name}">
+          </label>
+        </div>
+
+        <div class="row">
+          <div class="col-75">
+            <div style="padding: 5px 5px" for="point">Result</div>
+            <input
+                    type="text"
+                    id="point"
+                    name="point"
+                    th:value="${result.point}"
+                    required="required"
+            />
+          </div>
+          <div class="col-75">
+            <div style="padding: 5px 5px" for="resultName">Tittle</div>
+            <input
+                    type="text"
+                    id="resultName"
+                    name="resultName"
+                    th:value="${result.resultName}"
+                    required="required"
+            />
+          </div>
+        </div>
+
+        <div style="padding: 5px 5px" for="progress">Description Progress</div>
+        <div class="col-75">
+                          <textarea style="width: 600px;" cols="60" rows="5"
+                                    th:text="${result.progress}"
+                                    id="progress"
+                                    name="progress"
+                                    required="required">
+                          </textarea>
+        </div>
+
+        <input
+                type="hidden"
+                name="userId"
+                th:value="${result.user.user_id}"
+        />
+
+      </form>
+  </div>
+
+</div>
+</body>
+</html>
