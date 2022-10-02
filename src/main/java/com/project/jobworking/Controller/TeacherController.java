@@ -18,6 +18,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -143,9 +145,9 @@ public class TeacherController {
 
     @PostMapping(value = "/projects/update/{id}")
     public String updateProject(@PathVariable Long id, @RequestParam String name,
-                                @RequestParam Date startDate,
-                                @RequestParam Date endDate,
-                                @RequestParam String description) {
+                                @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
+                                @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate,
+                                @RequestParam String description) throws ParseException {
         projectService.updateProject(id,name,startDate,endDate,description);
         return "teacher/project/teacher-project-information-changed.html";
     }
@@ -157,7 +159,7 @@ public class TeacherController {
     }
 
     @PostMapping(value = "/projects/save")
-    public String saveProject(Project project) {
+    public String saveProject(Project project) throws ParseException {
         projectService.save(project);
         return "teacher/project/teacher-project-saved.html";
     }
@@ -238,6 +240,7 @@ public class TeacherController {
     @GetMapping(value = "/jobs/{id}")
     public String viewJob(Model model, @PathVariable Long id) {
         Job job = jobService.findById(id);
+        User student = userRepository.findById(job.getUser().getUser_id()).orElse(null);
         List<Comment> commentList = commentService.findAllByJob(job);
         Report report = reportRepository.findTopByJobIdOrderByCreatedDateDesc(id);
         if (Objects.nonNull(report)) {
@@ -247,6 +250,9 @@ public class TeacherController {
                 model.addAttribute("mediaListStudent", mediaList);
             }
         }
+        if (Objects.nonNull(student)) {
+            model.addAttribute("student", student);
+        }
         model.addAttribute("job", job);
         model.addAttribute("comments", commentList);
         model.addAttribute("comment", new Comment());
@@ -255,7 +261,7 @@ public class TeacherController {
 
     @PostMapping(value = "/jobs/update/{id}")
     public String updateJob(@PathVariable Long id, @RequestParam String name,
-                            @RequestParam Date startDate,
+                            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
                             @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate,
                             @RequestParam String description, @RequestParam String status) {
         jobService.updateJob(id,name,startDate,endDate,description,status);

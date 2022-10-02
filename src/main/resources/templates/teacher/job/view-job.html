@@ -141,6 +141,15 @@
                         </form>
                     </div>
                 </div>
+                <div th:if="${student}">
+                    <a th:href="@{/teacher/results/showStudent/{userId}(userId=${student.user_id})}" >
+                        <div class="row">
+                            <div class="col-75">
+                                <button type="button" class="submit-button" style="width: 80px">Result</button>
+                            </div>
+                        </div>
+                    </a>
+                </div>
             </div>
         </div>
     </div>

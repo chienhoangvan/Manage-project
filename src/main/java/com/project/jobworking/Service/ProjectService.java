@@ -2,12 +2,13 @@ package com.project.jobworking.Service;
 
 import com.project.jobworking.Entity.Project;
 
+import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
 public interface ProjectService {
 
-    Project save(Project project);
+    Project save(Project project) throws ParseException;
 
     List<Project> findAll();
 
@@ -25,7 +26,7 @@ public interface ProjectService {
 
     boolean checkAvailabilityById(Long projectId);
 
-    void updateProject(Long id, String name,Date startDate, Date endDate, String description);
+    void updateProject(Long id, String name,Date startDate, Date endDate, String description) throws ParseException;
 
     void assignProject(Long projectId, String MSSV);
 

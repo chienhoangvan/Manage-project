@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -25,8 +27,7 @@ public class ProjectServiceImpl implements ProjectService {
     UserRepository userRepository;
 
     @Override
-    public Project save(Project project)
-    {
+    public Project save(Project project) throws ParseException {
         project.setIsUsed(false);
         projectRepository.save(project);
         return project;
@@ -89,7 +90,7 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public void updateProject(Long id,String name,Date startDate, Date endDate, String description) {
+    public void updateProject(Long id,String name,Date startDate, Date endDate, String description) throws ParseException {
         Project project = this.findById(id);
         project.setName(name);
         project.setStartDate(startDate);

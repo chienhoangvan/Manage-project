@@ -15,84 +15,85 @@
 <div class="container">
     <h3>Project information:</h3>
 
-    <form th:action="@{/teacher/projects/update/{id}(id=${project.id})}" th:method="POST">
-        <div class="row">
-            <div class="col-50">
-                <label for="id">Project ID</label>
-            </div>
-            <label class="col-75" th:text="${project.id}"></label>
+    <div class="row">
+        <div class="col-50">
+            <label for="id">Project ID</label>
+        </div>
+        <label class="col-75" th:text="${project.id}"></label>
+    </div>
 
-            <div class="col-50">
-                <label for="name">Project Name</label>
-            </div>
-            <div class="col-75">
-                <input
-                        type="text"
-                        id="name"
-                        name="name"
-                        th:field="${project.name}"
-                        required="required"
-                />
-            </div>
+    <div class="row">
+        <div class="col-50">
+            <label for="name">Project Name</label>
+        </div>
+        <div class="col-75">
+            <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    th:field="${project.name}"
+                    required="required"
+                    disabled
+            />
         </div>
 
+        <div class="col-50">
+            <label for="isUsed">Status</label>
+        </div>
+        <div class="col-75">
+            <input
+                    type="text"
+                    id="isUsed"
+                    name="isUsed"
+                    th:field="${project.isUsed}"
+                    required="required"
+                    disabled
+            />
+        </div>
+    </div>
 
-        <div class="row">
-            <div class="col-50">
-                <label for="description">Description</label>
-            </div>
-            <div class="col-75">
-                <input
-                        type="text"
-                        id="description"
-                        name="description"
-                        th:field="${project.description}"
-                        required="required"
-                />
-            </div>
-
-            <div class="col-50">
-                <label for="isUsed">Status</label>
-            </div>
-            <label class="col-75" th:text="${project.isUsed}"></label>
+    <div class="row">
+        <div class="col-50">
+            <label for="startDate">Start Date</label>
+        </div>
+        <div class="col-75">
+            <input
+                    type="text"
+                    id="startDate"
+                    name="startDate"
+                    th:field="${project.startDate}"
+                    required="required"
+                    disabled
+            />
+        </div>
+        <div class="col-50">
+            <label for="endDate">End Date</label>
+        </div>
+        <div class="col-75">
+            <input
+                    type="text"
+                    id="endDate"
+                    name="endDate"
+                    th:field="${project.endDate}"
+                    required="required"
+                    disabled
+            />
         </div>
 
-        <div class="row">
-            <div class="col-50">
-                <label for="startDate">Start Date</label>
-            </div>
-            <div class="col-75">
-                <input
-                        type="text"
-                        id="startDate"
-                        name="startDate"
-                        th:field="${project.startDate}"
-                        required="required"
-                />
-            </div>
-            <div class="col-50">
-                <label for="endDate">End Date</label>
-            </div>
-            <div class="col-75">
-                <input
-                        type="text"
-                        id="endDate"
-                        name="endDate"
-                        th:field="${project.endDate}"
-                        required="required"
-                />
-            </div>
+    </div>
 
+    <div class="row">
+
+        <div class="col-50">
+            <label for="description">Description</label>
         </div>
-
-<!--        <div class="row">-->
-<!--            <div class="col-50"></div>-->
-<!--            <div class="col-50"></div>-->
-<!--            <div class="col-75">-->
-<!--                <input type="submit" value="Submit"/>-->
-<!--            </div>-->
-<!--        </div>-->
-    </form>
+        <div class="col-150">
+                        <textarea style="width: 600px;" cols="60" rows="5"
+                                  disabled
+                                  th:field="${project.description}">
+                        </textarea>
+        </div>
+    </div>
     <div>
         <form th:action="@{/teacher/projects/showProjects}">
             <div class="row">
