@@ -240,7 +240,12 @@ public class TeacherController {
     @GetMapping(value = "/jobs/{id}")
     public String viewJob(Model model, @PathVariable Long id) {
         Job job = jobService.findById(id);
-        User student = userRepository.findById(job.getUser().getUser_id()).orElse(null);
+        if (Objects.nonNull(job.getUser())) {
+            User student = userRepository.findById(job.getUser().getUser_id()).orElse(null);
+            if (Objects.nonNull(student)) {
+                model.addAttribute("student", student);
+            }
+        }
         List<Comment> commentList = commentService.findAllByJob(job);
         Report report = reportRepository.findTopByJobIdOrderByCreatedDateDesc(id);
         if (Objects.nonNull(report)) {
@@ -249,9 +254,6 @@ public class TeacherController {
             if (Objects.nonNull(mediaList)) {
                 model.addAttribute("mediaListStudent", mediaList);
             }
-        }
-        if (Objects.nonNull(student)) {
-            model.addAttribute("student", student);
         }
         model.addAttribute("job", job);
         model.addAttribute("comments", commentList);
